@@ -1,0 +1,17 @@
+version: '2'
+services:
+ postgres:
+  build: 
+   context: .
+   dockerfile: ./docker/postgres/Dockerfile
+  env_file: .pg.env
+ ruby:
+  links:
+   - postgres
+  build:
+   context: .
+   dockerfile: ./docker/ruby/Dockerfile
+  volumes:
+   - ./:/project
+  command:
+   bundle exec rails server -b 0.0.0.0
