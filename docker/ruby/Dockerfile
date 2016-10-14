@@ -4,6 +4,8 @@ RUN useradd -ms /bin/bash dockeruser
 USER dockeruser
 WORKDIR /home/dockeruser/project
 ADD Gemfile.lock /home/dockeruser/project/Gemfile.lock
+USER root
+RUN chown dockeruser:dockeruser /home/dockeruser/project/Gemfile.lock
+USER dockeruser
 ADD Gemfile /home/dockeruser/project/Gemfile
-RUN bundle install
 ADD . /home/dockeruser/project
