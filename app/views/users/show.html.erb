@@ -1,0 +1,6 @@
+Your name: <%= @user.name || "no name, please enter" %><br/>
+<%= form_for @user do |f| %>
+	You can update your name: <%= f.text_field :name %>
+<%= f.submit %>
+<% end %>
+<%= link_to('logout', destroy_user_session_path, method: :delete) %>
