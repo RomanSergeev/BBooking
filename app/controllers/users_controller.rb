@@ -1,6 +1,8 @@
 class UsersController < ApplicationController
   def show
+    #@user = User.preload(:profile).find(params[:id])
     @user = User.find(params[:id])
+    render layout: "user"
   end
 
   def edit

@@ -1,6 +1,25 @@
-Your name: <%= @user.name || "no name, please enter" %><br/>
-<%= form_for @user do |f| %>
-	You can update your name: <%= f.text_field :name %>
-<%= f.submit %>
-<% end %>
-<%= link_to('logout', destroy_user_session_path, method: :delete) %>
+<div class="row row-eq-height">
+	<div class="col-lg-4">
+		<div style="position: relative; width: 90%; height:90%; border:1px solid;">User photo</div>
+	</div>
+	<div class="col-lg-4">
+		<dl class="dl-horizontal">
+			<dt>Name</dt>
+			<dd><%= @user.name || "no name, please enter" %></dd>
+			<dt>Email</dt>
+			<dd><%= @user.email %></dd>
+			<dt>Phone</dt>
+			<dd>Not available now</dd>
+		</dl>
+	</div>
+	<div class="col-lg-4">
+		<dl class="dl-horizontal">
+			<dt>Country</dt>
+			<dd>Not available now</dd>
+			<dt>City</dt>
+			<dd>Not available now</dd>
+			<dt>Address</dt>
+			<dd>Not available now</dd>
+		</dl>
+	</div>
+</div>

@@ -9,14 +9,18 @@
   </head>
 
   <body>
-  <!-- Devise gem settings -->
   <div class="container">
     <div class="row">
-      <div class="col-xs-9">
-        <p class="notice"><%= notice %></p>
-        <p class="alert"><%= alert %></p>
-        <%= yield %>
-      </div>
+      <div class="col-lg-12">
+	      <!-- Devise gem settings -->
+        <p class="notice text-info"><%= notice %></p>
+        <p class="alert text-danger text-center"><%= alert %></p>
+	    </div>
+	  </div>
+	  <div class="row">
+		  <div class="col-lg-4 col-lg-push-4">
+			  <%= yield %>
+		  </div>
     </div>
   </div>
   </body>
