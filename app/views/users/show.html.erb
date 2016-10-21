@@ -1,9 +1,9 @@
 <div class="row row-eq-height">
-	<div class="col-lg-4">
-		<div style="position: relative; width: 90%; height:90%; border:1px solid;">User photo</div>
+	<div class="col-lg-3">
+		<div style="height:100%; border:1px solid; text-align:center;">User photo</div>
 	</div>
-	<div class="col-lg-4">
-		<dl class="dl-horizontal">
+	<div class="col-lg-3">
+		<dl class="dl-horizontal" id="userProfileFields1">
 			<dt>Name</dt>
 			<dd><%= @user.name || "no name, please enter" %></dd>
 			<dt>Email</dt>
@@ -12,8 +12,8 @@
 			<dd>Not available now</dd>
 		</dl>
 	</div>
-	<div class="col-lg-4">
-		<dl class="dl-horizontal">
+	<div class="col-lg-3">
+		<dl class="dl-horizontal" id="userProfileFields2">
 			<dt>Country</dt>
 			<dd>Not available now</dd>
 			<dt>City</dt>
@@ -21,5 +21,12 @@
 			<dt>Address</dt>
 			<dd>Not available now</dd>
 		</dl>
+	</div>
+	<div class="col-lg-2 col-lg-push-1 edit-buttons">
+		<%= link_to 'Manage your services', edit_services_path, :class => "btn btn-primary" %>
+		<br/><br/>
+		<%= link_to 'Edit your profile', edit_profile_path, :class => "btn btn-primary" %>
+		<br/><br/>
+		<%= link_to 'Logout', destroy_user_session_path, method: :delete, :class => "btn btn-primary" %>
 	</div>
 </div>
