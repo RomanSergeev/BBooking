@@ -1,2 +1,11 @@
-200 OK<br/>
-<%= link_to 'Back', user_path, :class => "btn btn-primary" %>
+<div class="row">
+	<div class="col-lg-6 col-lg-push-3">
+		<%= form_for @user, url: user_path, html: {method: :put} do |f| %>
+			<%= f.label :name, 'Your name' %>
+			<%= f.text_field :name, :class => 'form-control' %>
+			<br/>
+			<%= f.submit 'Apply', :class => 'btn btn-primary' %>
+			<%= link_to 'Back', user_path, :class => 'btn btn-primary', :style => 'float: right' %>
+		<% end %>
+	</div>
+</div>
