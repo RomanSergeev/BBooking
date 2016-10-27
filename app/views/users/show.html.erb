@@ -1,3 +1,4 @@
+<% parsed = @user.profile.personaldata %>
 <div class="row row-eq-height">
 	<div class="col-sm-3">
 		<div style="height:100%; border:1px solid; text-align:center;">User photo</div>
@@ -8,7 +9,7 @@
 				Name
 			</b></div>
 			<div class="col-sm-3">
-				<%= @user.name %>
+				<%= parsed['name'] %>
 			</div>
 			<div class="col-sm-2 col-sm-push-1"><b>
 				Country
@@ -38,7 +39,7 @@
 				Phone
 			</b></div>
 			<div class="col-sm-3">
-				Not available now
+				<%= parsed['phone'] %>
 			</div>
 			<div class="col-sm-2 col-sm-push-1"><b>
 				Address

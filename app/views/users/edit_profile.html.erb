@@ -1,11 +1,14 @@
 <div class="row">
 	<div class="col-sm-6 col-sm-push-3">
-		<%= form_for @user, url: user_path, html: {method: :put} do |f| %>
-			<%= f.label :name, 'Your name' %>
-			<%= f.text_field :name, :class => 'form-control' %>
+		<form action='<%= user_path %>' method="POST">
+			<input name="_method" type="hidden" value="put" />
+			<label for="personaldata[name]">Your name:</label>
+			<input type="text" id="personaldata[name]" name="personaldata[name]" class="form-control" value="<%= @user.profile.personaldata['name'] %>" />
+			<label for="personaldata[phone]">Your phone:</label>
+			<input type="text" id="personaldata[phone]" name="personaldata[phone]" class="form-control" value="<%= @user.profile.personaldata['phone'] %>" />
 			<br/>
-			<%= f.submit 'Apply', :class => 'btn btn-primary' %>
-			<%= link_to 'Back', user_path, :class => 'btn btn-primary', :style => 'float: right' %>
-		<% end %>
+			<button type="submit" class="btn btn-primary">Submit</button>
+			<a href='<%= user_path %>' class="btn btn-primary" style="float:right">Back</a>
+		</form>
 	</div>
 </div>

@@ -1,18 +1,19 @@
 class UsersController < ApplicationController
   def show
-    @user = User.find(params[:id])
+	  @user = User.preload(:profile).find(params[:id])
     render layout: "user"
   end
 
   def edit
-    #@user = User.find(params[:id])
+		#redirect_to user_path
   end
 
   def update
-    @user = User.find(params[:id])
-    @user.name = params[:user][:name]
-	  @user.update_attributes(name: params[:user][:name])
-		redirect_to user_path #maybe routes are best
+	  @user = User.preload(:profile).find(params[:id])
+	  #@user.update(user_params)
+	  @user.profile.update(personaldata: params[:personaldata])
+	  @user.save
+	  render 'show', layout: "user"
   end
 
 	def edit_profile
@@ -24,4 +25,10 @@ class UsersController < ApplicationController
 	  @user = User.preload(:profile).find(params[:id])
 	  render layout: "user"
   end
+
+	private
+
+	def user_params
+		params.require(:user).permit(:profile[:personaldata]['name'], :profile[:personaldata]['phone'])
+	end
 end
