@@ -7,6 +7,12 @@
 			<input type="text" id="personaldata[name]" name="personaldata[name]" class="form-control" value="<%= @user.profile.personaldata['name'] %>" />
 			<label for="personaldata[phone]">Your phone:</label>
 			<input type="text" id="personaldata[phone]" name="personaldata[phone]" class="form-control" value="<%= @user.profile.personaldata['phone'] %>" />
+			<label for="personaldata[country]">Your country:</label>
+			<input type="text" id="personaldata[country]" name="personaldata[country]" class="form-control" value="<%= @user.profile.personaldata['country'] %>" />
+			<label for="personaldata[city]">Your city:</label>
+			<input type="text" id="personaldata[city]" name="personaldata[city]" class="form-control" value="<%= @user.profile.personaldata['city'] %>" />
+			<label for="personaldata[address]">Your address:</label>
+			<input type="text" id="personaldata[address]" name="personaldata[address]" class="form-control" value="<%= @user.profile.personaldata['address'] %>" />
 			<br/>
 			<button type="submit" class="btn btn-primary">Submit</button>
 			<a href='<%= user_path %>' class="btn btn-primary" style="float:right">Back</a>
