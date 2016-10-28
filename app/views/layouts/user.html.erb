@@ -9,22 +9,14 @@
   </head>
 
   <body>
-  <nav class="navbar navbar-default navbar-fixed-top">
-	  <div class="container">
-		  <div class="navbar-header">
-			  <a class="navbar-brand" href="#"><b>B</b>Booking system</a>
-		  </div>
-	  </div>
-  </nav>
-  <div class="container" style="padding-top:60px;">
+	<%= render "layouts/header" %>
+  <div class="container">
 	  <div class="row">
 		  <div class="col-sm-12">
         <%= yield %>
       </div>
 	  </div>
   </div>
-  <footer class="footer">
-	  <p class="text-muted text-right">2016 Burning Buttons</p>
-  </footer>
+  <%= render "layouts/footer" %>
   </body>
 </html>
