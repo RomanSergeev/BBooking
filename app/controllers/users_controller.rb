@@ -10,10 +10,20 @@ class UsersController < ApplicationController
 
   def update
 	  @user = User.preload(:profile).find(params[:id])
-	  #@user.update(user_params)
-	  @user.profile.update(personaldata: params[:personaldata])
-	  @user.save
-	  render 'show', layout: "user"
+	  par = params[:personaldata]
+	  @warning_message = Hash.new
+	  unless /\A[A-Z][A-Za-z ]*\z/.match(par['name'])
+			@warning_message[:name] = "Name should start from big letter & contain only letters"
+	  end
+	  unless /\A\d{3}-\d{3}-\d{4}\z/.match(par['phone'])
+			@warning_message[:phone] = "Phone should be correct"
+	  end
+		if @warning_message.empty?
+	    @user.profile.update(personaldata: params[:personaldata])
+	    render 'show', layout: "user"
+	  else
+			redirect_to edit_profile_path message: @warning_message
+		end
   end
 
 	def edit_profile
