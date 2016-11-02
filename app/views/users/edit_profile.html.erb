@@ -1,14 +1,14 @@
 <% msg = params[:message]
-display_none = " style=display:none"
-has_warn = " has-warning"
+display_none = ' style=display:none'
+has_warn = ' has-warning'
 no_warn_name = (msg.nil? or msg[:name].nil?)
 no_warn_phone = (msg.nil? or msg[:phone].nil?)
-display_none_name = if no_warn_name then display_none else "" end
-display_none_phone = if no_warn_phone then display_none else "" end
-warn_name_input = if no_warn_name then "" else has_warn end
-warn_phone_input = if no_warn_phone then "" else has_warn end
-name_string = if no_warn_name then "" else msg[:name] end
-phone_string = if no_warn_phone then "" else msg[:phone] end
+display_none_name = if no_warn_name then display_none else '' end
+display_none_phone = if no_warn_phone then display_none else '' end
+warn_name_input = if no_warn_name then '' else has_warn end
+warn_phone_input = if no_warn_phone then '' else has_warn end
+name_string = if no_warn_name then '' else msg[:name] end
+phone_string = if no_warn_phone then '' else msg[:phone] end
 %>
 <div class="row">
 	<div class="col-sm-6 col-sm-push-3">

@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
+	before_action :find_user, only: [:show, :update, :edit_profile, :edit_services]
+
   def show
-	  @user = User.preload(:profile).find(params[:id])
     render layout: 'user'
   end
 
@@ -9,7 +10,6 @@ class UsersController < ApplicationController
   # end
 
   def update
-	  @user = User.preload(:profile).find(params[:id])
 	  par = params[:personaldata]
 	  @warning_message = Hash.new
 	  unless /\A[A-Z][A-Za-z ]*\z/.match(par['name'])
@@ -19,7 +19,7 @@ class UsersController < ApplicationController
 			@warning_message[:phone] = 'Phone should be correct'
 	  end
 		if @warning_message.empty?
-	    @user.profile.update(personaldata: params[:personaldata])
+	    @user.profile.update(personaldata: par)
 	    render 'show', layout: 'user'
 	  else
 			redirect_to edit_profile_path message: @warning_message
@@ -27,16 +27,19 @@ class UsersController < ApplicationController
   end
 
 	def edit_profile
-		@user = User.preload(:profile).find(params[:id])
 		render layout: 'user'
 	end
 
   def edit_services
-	  @user = User.preload(:profile).find(params[:id])
+		@services = Service.where(:id == @user.id)
 	  render layout: 'user'
   end
 
 	private
+
+  def find_user
+	  @user = User.preload(:profile).find(params[:id])
+  end
 
 	def user_params
 		params.require(:user).permit(:profile[:personaldata]['name'], :profile[:personaldata]['phone'])

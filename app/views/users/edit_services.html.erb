@@ -1,2 +1,10 @@
-200 OK<br/>
+<% if @services.nil? then %>
+	<ul>
+	<% @services.each do |service| %>
+			<li><%= service.inspect %></li>
+	<% end %>
+	</ul>
+<% else %>
+	   No services have been added yet.<br/>
+<% end %>
 <%= link_to 'Back', user_path, :class => "btn btn-primary" %>
