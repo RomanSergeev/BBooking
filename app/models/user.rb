@@ -8,6 +8,7 @@ class User < ApplicationRecord
          :trackable,
          :validatable
   has_one :profile
+  has_many :services
   before_create :build_default_profile
 
   def build_default_profile
