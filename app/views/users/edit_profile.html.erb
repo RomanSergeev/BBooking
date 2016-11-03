@@ -28,8 +28,8 @@ phone_string = if no_warn_phone then '' else msg[:phone] end
 			<label for="personaldata[address]">Your address:</label>
 			<input type="text" id="personaldata[address]" name="personaldata[address]" class="form-control" value="<%= @user.profile.personaldata['address'] %>" />
 			<br/>
-			<button type="submit" class="btn btn-primary">Submit</button>
-			<a href='<%= user_path %>' class="btn btn-primary" style="float:right">Back</a>
+			<button type="submit" class='btn btn-primary'>Submit</button>
+			<a href='<%= user_path %>' class='btn btn-primary' style="float:right">Back</a>
 		</form>
 	</div>
 </div>

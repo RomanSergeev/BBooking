@@ -1,7 +1,7 @@
 <%= form_for(service) do |f| %>
   <% if service.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(service.errors.count, "error") %> prohibited this service from being saved:</h2>
+    <div id="error_explanation" class="notshown">
+      <h2><%= pluralize(service.errors.count, 'error') %> prohibited this service from being saved:</h2>
 
       <ul>
       <% service.errors.full_messages.each do |message| %>
@@ -10,18 +10,13 @@
       </ul>
     </div>
   <% end %>
+	<% name = @service.servicedata['name'] %>
+	<% duration = @service.servicedata['duration'] %>
 
-  <div class="field">
-    <%= f.label :user_id %>
-    <%= f.text_field :user_id %>
-  </div>
-
-  <div class="field">
-    <%= f.label :servicedata %>
-    <%= f.text_field :servicedata %>
-  </div>
-
-  <div class="actions">
-    <%= f.submit %>
-  </div>
+	<label for="service[servicedata][name]">Service name</label>
+	<input type="text" id="service[servicedata][name]" name="service[servicedata][name]" class="form-control" value="<%= name %>" />
+	<label for="service[servicedata][duration]">Average duration</label>
+	<input type="text" id="service[servicedata][duration]" name="service[servicedata][duration]" class="form-control" value="<%= duration %>" />
+	<br/>
+	<%= f.submit class: 'btn btn-primary' %>
 <% end %>

@@ -1,3 +1,8 @@
+<% if @user.errors.any? %>
+	<% @user.errors.full_messages.each do |message| %>
+		<div class="text-danger"><%= message %></div>
+	<% end %>
+<% end %>
 <% profile_json = @user.profile.personaldata %>
 <div class="row row-eq-height">
 	<div class="col-sm-3">
@@ -51,11 +56,11 @@
 	</div>
 	<div class="col-sm-2 col-sm-push-1 edit-buttons">
 		<% if current_user == @user %>
-			<%= link_to 'Manage your services', edit_services_path, :class => "btn btn-primary" %>
+			<%= link_to 'Manage your services', edit_services_path, :class => 'btn btn-primary' %>
 			<br/><br/>
-			<%= link_to 'Edit your profile', edit_profile_path, :class => "btn btn-primary" %>
+			<%= link_to 'Edit your profile', edit_profile_path, :class => 'btn btn-primary' %>
 			<br/><br/>
 		<% end %>
-		<%= link_to 'Logout', destroy_user_session_path, method: :delete, :class => "btn btn-primary" %>
+		<%= link_to 'Logout', destroy_user_session_path, method: :delete, :class => 'btn btn-primary' %>
 	</div>
 </div>

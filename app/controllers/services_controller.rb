@@ -1,5 +1,6 @@
 class ServicesController < ApplicationController
   before_action :set_service, only: [:show, :edit, :update, :destroy]
+  layout 'user' # TODO change to services new own layout
 
   # GET /services
   # GET /services.json
@@ -15,16 +16,22 @@ class ServicesController < ApplicationController
   # GET /services/new
   def new
     @service = Service.new
+    @service.user_id = current_user.id
   end
 
   # GET /services/1/edit
   def edit
+    if @provider.id != current_user.id
+      redirect_to user_path(current_user), notice: "Editing of other's service is forbidden."
+    end
   end
 
   # POST /services
   # POST /services.json
   def create
     @service = Service.new(service_params)
+    @service.user_id = current_user.id
+    @service.servicedata = params[:service][:servicedata]
 
     respond_to do |format|
       if @service.save
@@ -40,6 +47,7 @@ class ServicesController < ApplicationController
   # PATCH/PUT /services/1
   # PATCH/PUT /services/1.json
   def update
+    @service.servicedata = params[:service][:servicedata]
     respond_to do |format|
       if @service.update(service_params)
         format.html { redirect_to @service, notice: 'Service was successfully updated.' }
@@ -65,10 +73,11 @@ class ServicesController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_service
       @service = Service.find(params[:id])
+      @provider = User.preload(:profile).find(@service.user_id)
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def service_params
-      params.require(:service).permit(:user_id, :servicedata)
+      params.require(:service).permit(:servicedata)
     end
 end

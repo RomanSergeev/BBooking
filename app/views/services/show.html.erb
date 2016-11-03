@@ -1,14 +1,26 @@
-<p id="notice"><%= notice %></p>
+<div class="row">
+	<div class="col-sm-10">
+		<p id="notice"><%= notice %></p>
 
-<p>
-  <strong>User:</strong>
-  <%= @service.user_id %>
-</p>
+		<h2>Service <b><%= @service.servicedata['name'] %></b></h2>
+		<br/>
 
-<p>
-  <strong>Servicedata:</strong>
-  <%= @service.servicedata %>
-</p>
+		<b>Provided by </b> <%= @provider.profile.personaldata['name'] %>
+		<br/>
 
-<%= link_to 'Edit', edit_service_path(@service) %> |
-<%= link_to 'Back', services_path %>
+		<b>Average duration </b> <%= @service.servicedata['duration'] %>
+		<br/>
+	</div>
+	<div class="col-sm-2 edit-buttons">
+		<%= link_to 'My services', edit_services_path(current_user), class: 'btn btn-primary' %>
+		<br/><br/>
+		<% if @provider.id == current_user.id %>
+			<%= link_to 'Edit service', edit_service_path(@service), class: 'btn btn-primary' %>
+			<br/><br/>
+			<%= link_to 'Delete service', @service, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-primary' %>
+    <% else %>
+			<!-- TODO change welcome_index_path when booking will be ready -->
+			<%= link_to 'Book this service', welcome_index_path, class: 'btn btn-primary' %>
+		<% end %>
+	</div>
+</div>

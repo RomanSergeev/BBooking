@@ -1,8 +1,8 @@
 class UsersController < ApplicationController
 	before_action :find_user, only: [:show, :update, :edit_profile, :edit_services]
+	layout 'user' # why isn't it set automatically?
 
   def show
-    render layout: 'user'
   end
 
   # def edit
@@ -20,19 +20,24 @@ class UsersController < ApplicationController
 	  end
 		if @warning_message.empty?
 	    @user.profile.update(personaldata: par)
-	    render 'show', layout: 'user'
+	    render 'show'
 	  else
 			redirect_to edit_profile_path message: @warning_message
 		end
   end
 
 	def edit_profile
-		render layout: 'user'
+		if current_user.id != @user.id
+			redirect_to user_path(current_user), notice: 'Editing of another user is forbidden.'
+		end
 	end
 
   def edit_services
-		@services = Service.where(:id == @user.id)
-	  render layout: 'user'
+	  if current_user.id != @user.id
+		  redirect_back fallback_location: user_path(current_user), notice: 'Editing of another user is forbidden.'
+	  else
+			@services = Service.where(user_id: @user.id)
+		end
   end
 
 	private

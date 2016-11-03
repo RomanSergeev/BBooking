@@ -1,10 +1,19 @@
-<% if @services.nil? then %>
-	<ul>
-	<% @services.each do |service| %>
-			<li><%= service.inspect %></li>
-	<% end %>
-	</ul>
-<% else %>
-	   No services have been added yet.<br/>
-<% end %>
-<%= link_to 'Back', user_path, :class => "btn btn-primary" %>
+<div class="row">
+	<div class="col-sm-10">
+		<% if @services.empty? %>
+				No services have been added yet.<br/>
+		<% else %>
+			<% @services.each do |service| %>
+				<div>
+					<% name = service.servicedata && service.servicedata['name'] || '' %>
+					<% duration = service.servicedata && service.servicedata['duration'] || '' %>
+					<span><%= "#{name} / #{duration} mins." %></span>
+					<%= link_to 'Edit', edit_service_path(service), class: 'btn btn-primary' %>
+				</div>
+			<% end %>
+		<% end %>
+	</div>
+	<div class="col-sm-2 edit-buttons">
+		<%= link_to 'New service', new_service_path, :class => 'btn btn-primary' %>
+	</div>
+</div>
