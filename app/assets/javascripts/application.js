@@ -18,3 +18,7 @@
 $(document).ready(function(){
     $('[data-toggle="popover"]').popover();
 });
+
+function changeInputValue(input, value) {
+    input.value = value;
+}
