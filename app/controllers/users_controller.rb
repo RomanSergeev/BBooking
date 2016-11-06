@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-	before_action :find_user, only: [:show, :update, :edit_profile, :edit_services]
+	before_action :find_user, only: [:show, :update, :edit_profile, :edit_services, :show_services]
 	layout 'user' # why isn't it set automatically?
 
   def show
@@ -39,6 +39,13 @@ class UsersController < ApplicationController
 			@services = Service.where(user_id: @user.id)
 		end
   end
+
+	def show_services
+		@services = Service.where(user_id: @user.id)
+		if current_user.id == @user.id
+			redirect_to edit_services_path(@user)
+		end
+	end
 
 	private
 

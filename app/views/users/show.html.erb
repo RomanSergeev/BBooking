@@ -61,9 +61,8 @@
 			<%= link_to 'Edit my profile', edit_profile_path, :class => 'btn btn-primary' %>
 			<br/><br/>
 		<% else %>
-				<!--TODO add show_services page-->
-			<%= link_to 'View services', welcome_index_path, :class => 'btn btn-primary' %>
-				<br/><br/>
+			<%= link_to 'View services', show_services_path(@user), :class => 'btn btn-primary' %>
+			<br/><br/>
 		<% end %>
 		<%= link_to 'Logout', destroy_user_session_path, method: :delete, :class => 'btn btn-primary' %>
 	</div>
