@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Your homepage</title>
+    <%= csrf_meta_tags %>
+
+    <%= stylesheet_link_tag    'application', media: 'all' %>
+    <%= javascript_include_tag 'application' %>
+  </head>
+
+  <body>
+  <nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!--<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">-->
+          <!--<span class="sr-only">Toggle navigation</span>-->
+          <!--<span class="icon-bar"></span>-->
+          <!--<span class="icon-bar"></span>-->
+          <!--<span class="icon-bar"></span>-->
+        <!--</button>-->
+        <a class="navbar-brand" href="#"><b>B</b>Booking system</a>
+      </div>
+    </div>
+  </nav>
+  <div class="container-fluid" style="padding-top:60px;">
+    <div class="row">
+      <div class="col-lg-9">
+        <%= yield %>
+      </div>
+      <div class="col-lg-3">
+        <br/>
+        <%= link_to 'logout', destroy_user_session_path, method: :delete, :class => "btn btn-primary" %>
+      </div>
+    </div>
+  </div>
+  <footer class="footer">
+    <p class="text-muted text-right">2016 BButtons</p>
+  </footer>
+  </body>
+</html>
