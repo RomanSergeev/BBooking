@@ -7,5 +7,4 @@ class User < ApplicationRecord
          :rememberable,
          :trackable,
          :validatable
-  #belongs_to :profile
 end
