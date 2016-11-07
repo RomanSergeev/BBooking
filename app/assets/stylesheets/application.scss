@@ -11,10 +11,5 @@
  * It is generally better to create a new file per style scope.
  */
 @import "bootstrap";
+@import "users";
 @import "global";
-
-.link-logout {
-  margin-top: 5px;
-  text-align: center;
-  display: block;
-}

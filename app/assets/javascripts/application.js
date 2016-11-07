@@ -13,8 +13,5 @@
 //= require jquery
 //= require jquery_ujs
 //= require bootstrap-sprockets
+//= require global
 //= require_tree .
-
-$(document).ready(function(){
-    $('[data-toggle="popover"]').popover();
-});
