@@ -1,2 +1,3 @@
-<h1>Your start page</h1>
-<%= link_to('logout', destroy_user_session_path, method: :delete) %>
+<h1>App landing page</h1>
+<%= link_to 'To profile',user_session_path , class: 'btn btn-primary' %>
+<%= link_to 'Logout', destroy_user_session_path, method: :delete, class: 'btn btn-primary' %>

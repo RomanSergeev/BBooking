@@ -1,17 +1,22 @@
 class UsersController < ApplicationController
-  def show
-    #@user = User.preload(:profile).find(params[:id])
-    @user = User.find(params[:id])
-    render layout: "user"
-  end
-
-  def edit
-    @user = User.find(params[:id])
-  end
+  before_action :load_user, only: [:show, :update]
+  layout 'user'
 
   def update
-    @user = User.find(params[:id])
-    @user.name = params[:user][:name]
-    @user.update_attributes(name: params[:user][:name])
+    if @user.update(personaldata: params[:personaldata])
+      render 'show'
+    else
+      redirect_to edit_profile_path
+    end
+  end
+
+  private
+
+  def load_user
+    @user = User.preload(:profile).find(params[:id])
+  end
+
+  def user_params
+    params.require(:user).permit(:profile[:personaldata]['name'], :profile[:personaldata]['phone'])
   end
 end

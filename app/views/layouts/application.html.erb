@@ -9,19 +9,22 @@
   </head>
 
   <body>
-    <div class="container">
+    <%= render "layouts/header" %>
+    <div class="container wrapper">
       <div class="row">
-        <div class="col-lg-12">
+        <div class="col-sm-12">
           <!-- Devise gem settings -->
-          <p class="notice text-info"><%= notice %></p>
-          <p class="alert text-danger text-center"><%= alert %></p>
+          <!--<p class="notice text-info notshown"><= notice %></p>-->
+          <!-- TODO add some alert styles & make 'notice' notifications disappearing -->
+          <p class="alert text-danger text-center notshown"><%= alert %></p>
         </div>
       </div>
       <div class="row">
-        <div class="col-lg-4 col-lg-push-4">
+        <div class="col-sm-4 col-sm-push-4">
           <%= yield %>
         </div>
       </div>
     </div>
+    <%= render "layouts/footer" %>
   </body>
-  </html>
+</html>
