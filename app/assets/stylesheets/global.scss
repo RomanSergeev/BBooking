@@ -2,6 +2,10 @@ html, body {
   height: 100%;
 }
 
+.field.form-group>div {
+  display: inline;
+}
+
 .wrapper {
   min-height: calc(100% - 132px);
 }

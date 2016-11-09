@@ -3,7 +3,8 @@
     <%= f.label :name %>
     <!--TODO reorganize for better readability-->
     <% if profile.errors[:name] %>
-      <span class="text-danger"><%= profile.errors[:name][0] %></span>
+      <span class="label label-warning" data-toggle="popover" data-trigger="hover"
+            data-content="<%= profile.errors[:name][0] %>" data-original-title="Warning">!</span>
     <% end %>
     <%= f.text_field :name, autofocus: true, class: 'form-control' %>
   </div>
@@ -11,7 +12,8 @@
   <div class="field form-group">
     <%= f.label :phone %>
     <% if profile.errors[:phone] %>
-      <span class="text-danger"><%= profile.errors[:phone][0] %></span>
+      <span class="label label-warning" data-toggle="popover" data-trigger="hover"
+            data-content="<%= profile.errors[:phone][0] %>" data-original-title="Warning">!</span>
     <% end %>
     <%= f.text_field :phone, class: 'form-control' %>
   </div>
