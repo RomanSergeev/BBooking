@@ -1,69 +1,71 @@
-<% if @user.errors.any? %>
-	<% @user.errors.full_messages.each do |message| %>
-		<div class="text-danger"><%= message %></div>
-	<% end %>
-<% end %>
-<% profile_json = @user.profile.personaldata %>
+<% profile_json = @user.profile ? @user.profile.personaldata : {} %>
 <div class="row row-eq-height">
-	<div class="col-sm-3">
-		<div style="height:100%; border:1px solid; text-align:center;">User photo</div>
-	</div>
-	<div class="col-sm-6">
-		<div class="row">
-			<div class="col-sm-2"><b>
-				Name
-			</b></div>
-			<div class="col-sm-3">
-				<%= profile_json['name'] %>
-			</div>
-			<div class="col-sm-2 col-sm-push-1"><b>
-				Country
-			</b></div>
-			<div class="col-sm-3 col-sm-push-1">
-				<%= profile_json['country'] %>
-			</div>
-		</div>
+  <div class="col-sm-3">
+    <div style="height:100%; border:1px solid; text-align:center;">User photo</div>
+  </div>
 
-		<div class="row">
-			<div class="col-sm-2"><b>
-				Email
-			</b></div>
-			<div class="col-sm-3">
-				<%= @user.email %>
-			</div>
-			<div class="col-sm-2 col-sm-push-1"><b>
-				City
-			</b></div>
-			<div class="col-sm-3 col-sm-push-1">
-				<%= profile_json['city'] %>
-			</div>
-		</div>
+  <div class="col-sm-6">
+    <div class="row">
+      <div class="col-sm-2"><b>
+        Name
+      </b></div>
+      <div class="col-sm-3">
+        <%= profile_json['name'] %>
+      </div>
+      <div class="col-sm-2 col-sm-push-1"><b>
+        Country
+      </b></div>
+      <div class="col-sm-3 col-sm-push-1">
+        <%= profile_json['country'] %>
+      </div>
+    </div>
 
-		<div class="row">
-			<div class="col-sm-2"><b>
-				Phone
-			</b></div>
-			<div class="col-sm-3">
-				<%= profile_json['phone'] %>
-			</div>
-			<div class="col-sm-2 col-sm-push-1"><b>
-				Address
-			</b></div>
-			<div class="col-sm-3 col-sm-push-1">
-				<%= profile_json['address'] %>
-			</div>
-		</div>
-	</div>
-	<div class="col-sm-2 col-sm-push-1 edit-buttons">
-		<% if current_user == @user %>
-			<%= link_to 'Manage my services', edit_services_path, :class => 'btn btn-primary' %>
-			<br/><br/>
-			<%= link_to 'Edit my profile', edit_profile_path, :class => 'btn btn-primary' %>
-			<br/><br/>
-		<% else %>
-			<%= link_to 'View services', show_services_path(@user), :class => 'btn btn-primary' %>
-			<br/><br/>
-		<% end %>
-		<%= link_to 'Logout', destroy_user_session_path, method: :delete, :class => 'btn btn-primary' %>
-	</div>
+    <div class="row">
+      <div class="col-sm-2"><b>
+        Email
+      </b></div>
+      <div class="col-sm-3">
+        <%= @user.email %>
+      </div>
+      <div class="col-sm-2 col-sm-push-1"><b>
+        City
+      </b></div>
+      <div class="col-sm-3 col-sm-push-1">
+        <%= profile_json['city'] %>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-2"><b>
+        Phone
+      </b></div>
+      <div class="col-sm-3">
+        <%= profile_json['phone'] %>
+      </div>
+      <div class="col-sm-2 col-sm-push-1"><b>
+        Address
+      </b></div>
+      <div class="col-sm-3 col-sm-push-1">
+        <%= profile_json['address'] %>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-sm-2 col-sm-push-1 edit-buttons">
+    <% if current_user == @user %>
+      <%= link_to 'Manage your services', edit_services_path, class: 'btn btn-primary' %>
+      <br/><br/>
+      <% if @user.profile %>
+        <%= link_to 'Edit your profile', edit_profile_path(@user.profile), class: 'btn btn-primary' %>
+      <% else %>
+        <%= link_to 'Create profile', new_profile_path, class: 'btn btn-primary' %>
+      <% end %>
+      <br/><br/>
+    <% else %>
+      <%= link_to 'View services', show_services_path(@user), :class => 'btn btn-primary' %>
+      <br/><br/>
+    <% end %>
+    <%= link_to 'Logout', destroy_user_session_path, method: :delete, class: 'btn btn-primary' %>
+  </div>
+
 </div>
