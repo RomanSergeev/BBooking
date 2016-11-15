@@ -44,8 +44,22 @@ html, body {
   right: 1%;
 }
 
-.label.label-warning {
+.label.label-warning,
+.label.label-info {
   border-radius: 50%;
+}
+
+.label.label-info:hover,
+#descriptionLabel:hover+.label.label-info {
+  opacity: 1;
+}
+
+.label.label-info {
+  opacity: 0;
+  -webkit-transition: opacity .5s;
+     -moz-transition: opacity .5s;
+       -o-transition: opacity .5s;
+          transition: opacity .5s;
 }
 
 .form-control.has-warning {
@@ -53,9 +67,15 @@ html, body {
   width: calc(100% - 30px);
 }
 
-.popover-title,
-.popover-content {
-  background: linear-gradient( to right, white, #f0ad4e );}
+.label-warning+.popover .popover-title,
+.label-warning+.popover .popover-content {
+  background: linear-gradient( to right, white, #f0ad4e );
+}
+
+.label-info+.popover .popover-title,
+.label-info+.popover .popover-content {
+  background: linear-gradient( to right, white, #5bc0de );
+}
 
 .link-logout {
   margin-top: 5px;

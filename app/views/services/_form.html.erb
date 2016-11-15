@@ -24,7 +24,9 @@
   <input type="range" id="service[servicedata][duration]" name="service[servicedata][duration]" min="1" max="120"
          oninput="changeInputValue($('#rangeDoubler')[0], this.value)" class="form-control" value="<%= duration %>" />
   <br/>
-  <label for="service[servicedata][description]">You may add some description here</label>
+  <label id="descriptionLabel" for="service[servicedata][description]">You may add some description here</label>
+  <span class="label label-info" data-toggle="popover" data-trigger="hover"
+        data-content="You don't have to write out your personal info (phone, address, etc.) here; it is seen from your profile page." data-original-title="Info">!</span>
   <textarea maxlength="500" id="service[servicedata][description]" name="service[servicedata][description]" rows="6" class="form-control" style="resize: none"><%= description %></textarea>
   <br/>
   <%= f.submit class: 'btn btn-primary' %>
