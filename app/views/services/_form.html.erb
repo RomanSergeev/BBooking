@@ -12,6 +12,7 @@
   <% end %>
   <% name = @service.servicedata['name'] %>
   <% duration = @service.servicedata['duration'] || 15 %>
+  <% description = @service.servicedata['description'] %>
 
   <label for="service[servicedata][name]">Service name</label>
   <input type="text" id="service[servicedata][name]" name="service[servicedata][name]" class="form-control" value="<%= name %>" />
@@ -22,6 +23,9 @@
   minutes
   <input type="range" id="service[servicedata][duration]" name="service[servicedata][duration]" min="1" max="120"
          oninput="changeInputValue($('#rangeDoubler')[0], this.value)" class="form-control" value="<%= duration %>" />
+  <br/>
+  <label for="service[servicedata][description]">You may add some description here</label>
+  <textarea maxlength="500" id="service[servicedata][description]" name="service[servicedata][description]" rows="6" class="form-control" style="resize: none"><%= description %></textarea>
   <br/>
   <%= f.submit class: 'btn btn-primary' %>
 <% end %>

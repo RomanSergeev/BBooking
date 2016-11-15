@@ -3,6 +3,8 @@
 <%= render 'form', service: @service %>
 
 <br/>
-<%= link_to 'Show', @service, class: 'btn btn-primary' %>
-<br/><br/>
+<% if service_url(@service) != _back_url %>
+  <%= link_to 'Show', @service, class: 'btn btn-primary' %>
+  <br/><br/>
+<% end %>
 <%= link_to 'Back', :back, class: 'btn btn-primary' %>
