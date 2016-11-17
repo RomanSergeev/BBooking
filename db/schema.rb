@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161102063317) do
+ActiveRecord::Schema.define(version: 20161117095917) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -24,10 +24,11 @@ ActiveRecord::Schema.define(version: 20161102063317) do
   end
 
   create_table "services", force: :cascade do |t|
-    t.string   "user_id"
-    t.jsonb    "servicedata", default: "{}"
-    t.datetime "created_at",                 null: false
-    t.datetime "updated_at",                 null: false
+    t.integer  "user_id"
+    t.jsonb    "servicedata",              default: "{}"
+    t.datetime "created_at",                              null: false
+    t.datetime "updated_at",                              null: false
+    t.tsvector "textsearchable_index_col"
     t.index ["user_id"], name: "index_services_on_user_id", using: :btree
   end
 

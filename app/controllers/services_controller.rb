@@ -15,6 +15,9 @@ class ServicesController < ApplicationController
 
   # GET /services/new
   def new
+    unless current_user.profile.present?
+      redirect_to user_path(current_user), notice: 'You can\'t create any services while no information about you is present.'
+    end
     @service = Service.new
     @service.user_id = current_user.id
   end
