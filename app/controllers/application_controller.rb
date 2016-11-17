@@ -7,6 +7,12 @@ class ApplicationController < ActionController::Base
   end
 
   def search
+    params[:q] ||= ''
+    query = "to_tsquery('" + params[:q] + "')"
+    @records = Service.find_by_sql(
+      "SELECT id, servicedata, ts_headline(textsearchable_index_col, " + query +
+        ") as tooltip FROM services WHERE to_tsvector(textsearchable_index_col) @@ " + query + ";"
+    )
     render 'search/index', layout: 'search'
   end
 

@@ -1,1 +1,10 @@
-<%= @query.inspect %>
+<% unless @records.any? %>
+  No results match your query :(
+<% end %>
+<% @records.each do |record| %>
+  <%= link_to record.servicedata['name'], service_path(record.id) %>
+  <div>
+    <%= record.tooltip.html_safe %>
+  </div>
+  <hr/>
+<% end %>
