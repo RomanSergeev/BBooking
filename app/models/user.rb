@@ -10,8 +10,4 @@ class User < ApplicationRecord
   has_one :profile
   has_many :services
 
-  def greater(n)
-    n > 10
-  end
-
 end
