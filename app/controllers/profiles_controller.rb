@@ -1,4 +1,5 @@
 class ProfilesController < ApplicationController
+  include ProfilesService
   layout 'user'
 
   def new
@@ -6,7 +7,7 @@ class ProfilesController < ApplicationController
   end
 
   def edit
-    @profile = Profile.where(user_id: current_user.id)[0]
+    require_permission
   end
 
   def create
@@ -19,7 +20,7 @@ class ProfilesController < ApplicationController
   end
 
   def update
-    @profile = Profile.find(params[:id])
+    require_permission
     if @profile.update_attributes(personaldata: params[:profile])
       redirect_to user_path(current_user)
     else

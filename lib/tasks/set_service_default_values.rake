@@ -1,5 +1,5 @@
-namespace :nmspc do
-  task task: :environment do
+namespace :service do
+  task set_default_values: :environment do
     Service.where(servicedata: nil).each do |service|
       service.servicedata = '{}'
       service.save!

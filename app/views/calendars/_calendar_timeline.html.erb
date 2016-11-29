@@ -1,0 +1,17 @@
+<% prefs = settings[:calendar].preferences
+   # time for serving start and finish is now counted in minutes, 1440 minutes = full day; 1% scale width = 14.4 minutes
+  serving_start = prefs['serving_start'] || 0
+  serving_finish = prefs['serving_finish'] || CalendarsController::MINUTES_IN_DAY - 1
+  break_start = (prefs['break_start'] && prefs['break_finish']) ? prefs['break_start'] : nil
+  break_finish = (prefs['break_start'] && prefs['break_finish']) ? prefs['break_finish'] : nil
+%>
+<div class="timeline tl-free">
+  <div class="timeline tl-out-of-work" style="width: <%= width(serving_start) %>%"></div>
+  <div class="timeline tl-out-of-work" style="width: <%= 100 - width(serving_finish) %>%;
+      left: <%= width(serving_finish) %>%"></div>
+  <% if break_start %>
+    <div class="timeline tl-out-of-work" style="width: <%= width(break_finish.to_i - break_start.to_i) %>%;
+        left: <%= width(break_start) %>%">
+    </div>
+  <% end %>
+</div>

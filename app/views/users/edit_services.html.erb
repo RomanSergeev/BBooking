@@ -17,9 +17,12 @@
           <tr>
             <td><%= name %></td>
             <td><%= "#{duration} minutes" %></td>
-            <td><%= link_to 'View', service_path(service), class: 'btn btn-primary' %></td>
-            <td><%= link_to 'Edit', edit_service_path(service), class: 'btn btn-primary' %></td>
-            <td><%= link_to 'Delete', service_path(service), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-primary' %></td>
+            <td><%= link_to 'View', service_path(service) %></td>
+            <td><%= link_to 'Edit', edit_service_path(service) %></td>
+            <td><%= link_to 'Delete',
+                            service_path(service),
+                            method: :delete,
+                            data: { confirm: 'Are you sure?' } %></td>
           </tr>
         <% end %>
         </tbody>
@@ -27,8 +30,7 @@
     <% end %>
   </div>
   <div class="col-sm-2 edit-buttons">
-    <%= link_to 'New service', new_service_path, :class => 'btn btn-primary' %>
-    <br/><br/>
-    <%= link_to 'My homepage', user_path, :class => 'btn btn-primary' %>
+    <%= link_to 'New service', new_service_path %>
+    <%= link_to 'My homepage', user_path %>
   </div>
 </div>

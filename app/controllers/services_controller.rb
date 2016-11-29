@@ -1,4 +1,5 @@
 class ServicesController < ApplicationController
+  include CalendarsService
   include ServicesService
   layout 'user' # TODO change to services new own layout
 
@@ -23,7 +24,7 @@ class ServicesController < ApplicationController
   # GET /services/1/edit
   def edit
     set_service
-    require_permission(@provider)
+    require_permission
   end
 
   # POST /services
@@ -48,7 +49,7 @@ class ServicesController < ApplicationController
   # PATCH/PUT /services/1.json
   def update
     set_service
-    require_permission(@provider)
+    require_permission
     @service.servicedata = params[:service][:servicedata]
     respond_to do |format|
       if @service.update(service_params)
@@ -65,7 +66,7 @@ class ServicesController < ApplicationController
   # DELETE /services/1.json
   def destroy
     set_service
-    require_permission(@provider)
+    require_permission
     @service.destroy
     respond_to do |format|
       format.html { redirect_to edit_services_path(@provider), notice: 'Service was successfully destroyed.' }
@@ -73,10 +74,27 @@ class ServicesController < ApplicationController
     end
   end
 
+  def book
+    set_service
+    prevent_own_booking
+    @my_calendar_data = get_data_for_timeline(current_user)
+    @provider_calendar_data = get_data_for_timeline(@provider)
+  end
+
   private
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def service_params
-      params.require(:service).permit(:servicedata)
-    end
+  def perform_booking(user, service, order_time)
+    check_booking_available_conditions(user, service, order_time)
+    order = Order.new(
+      customer_id: user.id,
+      service_id: service.id,
+      start_time: order_time,
+      duration: service.servicedata['duration'])
+    order.save!
+  end
+
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def service_params
+    params.require(:service).permit(:servicedata)
+  end
 end

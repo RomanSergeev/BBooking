@@ -1,0 +1,6 @@
+<h2>My calendar:</h2>
+<%= render 'calendars/calendar_timeline', settings: @my_calendar_data %>
+<h2><%= @provider.profile.personaldata['name'] %>'s calendar:</h2>
+<%= render 'calendars/calendar_timeline', settings: @provider_calendar_data %>
+<br/>
+<%= link_to 'Back', :back %>

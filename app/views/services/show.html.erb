@@ -13,33 +13,15 @@
   </div>
   <div class="col-sm-2 edit-buttons">
     <% if @provider.id == current_user.id %>
-      <%= link_to\
-          'Edit service',
-          edit_service_path(@service),
-          class: 'btn btn-primary' %>
-      <br/><br/>
-      <%= link_to\
-          'Delete service',
+      <%= link_to 'Edit service', edit_service_path(@service)%>
+      <%= link_to 'Delete service',
           @service,
           method: :delete,
-          data: { confirm: 'Are you sure?' },
-          class: 'btn btn-primary' %>
+          data: { confirm: 'Are you sure?' } %>
     <% else %>
-      <%= link_to\
-          'All this user\'s services',
-          show_services_path(@provider),
-          :class => 'btn btn-primary' %>
-      <br/><br/>
-      <!-- TODO change welcome_index_path when booking will be ready -->
-      <%= link_to\
-          'Book this service',
-          welcome_index_path,
-          class: 'btn btn-primary' %>
+      <%= link_to 'All this user\'s services', show_services_path(@provider) %>
+      <%= link_to 'Book this service', book_service_path(@service) %>
     <% end %>
-    <br/><br/>
-    <%= link_to\
-        'My services',
-        edit_services_path(current_user),
-        class: 'btn btn-primary' %>
+    <%= link_to 'My services', edit_services_path(current_user) %>
   </div>
 </div>

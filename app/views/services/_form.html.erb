@@ -27,7 +27,6 @@
          name="rangeDoubler"
          min="1"
          max="120"
-         oninput="changeInputValue($('#service\\[servicedata\\]\\[duration\\]')[0], this.value)"
          value="<%= duration %>" />
   minutes
   <input type="range"
@@ -35,9 +34,8 @@
          name="service[servicedata][duration]"
          min="1"
          max="120"
-         oninput="changeInputValue($('#rangeDoubler')[0], this.value)"
          class="form-control"
          value="<%= duration %>" />
   <br/>
-  <%= f.submit class: 'btn btn-primary' %>
+  <%= f.submit %>
 <% end %>

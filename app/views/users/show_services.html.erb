@@ -17,9 +17,8 @@
               <tr>
                 <td><%= name %></td>
                 <td><%= "#{duration} minutes" %></td>
-                <td><%= link_to 'View', service_path(service), class: 'btn btn-primary' %></td>
-                <!--TODO change welcome_index_path when booking will be ready-->
-                <td><%= link_to 'Book', welcome_index_path, class: 'btn btn-primary' %></td>
+                <td><%= link_to 'View', service_path(service) %></td>
+                <td><%= link_to 'Book', book_service_path(service) %></td>
               </tr>
           <% end %>
           </tbody>
@@ -27,8 +26,8 @@
     <% end %>
   </div>
   <div class="col-sm-2 edit-buttons">
-    <%= link_to 'Back to ' + @user.profile.personaldata['name'] + '\'s page', user_path(@user), :class => 'btn btn-primary' %>
-    <br/><br/>
-    <%= link_to 'My homepage', user_path(current_user), :class => 'btn btn-primary' %>
+    <%= link_to 'Back to ' + @user.profile.personaldata['name'] + '\'s page',
+                user_path(@user) %>
+    <%= link_to 'My homepage', user_path(current_user) %>
   </div>
 </div>

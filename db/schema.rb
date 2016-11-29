@@ -10,10 +10,27 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161102063317) do
+ActiveRecord::Schema.define(version: 20161127171933) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "calendars", force: :cascade do |t|
+    t.integer  "user_id"
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
+    t.jsonb    "preferences", default: "{}", null: false
+    t.index ["user_id"], name: "index_calendars_on_user_id", using: :btree
+  end
+
+  create_table "orders", force: :cascade do |t|
+    t.integer  "customer_id",             null: false
+    t.integer  "service_id",              null: false
+    t.datetime "start_time",              null: false
+    t.integer  "duration",    default: 0
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
+  end
 
   create_table "profiles", force: :cascade do |t|
     t.integer  "user_id"
@@ -24,10 +41,11 @@ ActiveRecord::Schema.define(version: 20161102063317) do
   end
 
   create_table "services", force: :cascade do |t|
-    t.string   "user_id"
-    t.jsonb    "servicedata", default: "{}"
-    t.datetime "created_at",                 null: false
-    t.datetime "updated_at",                 null: false
+    t.integer  "user_id"
+    t.jsonb    "servicedata",              default: "{}"
+    t.datetime "created_at",                              null: false
+    t.datetime "updated_at",                              null: false
+    t.text     "textsearchable_index_col"
     t.index ["user_id"], name: "index_services_on_user_id", using: :btree
   end
 

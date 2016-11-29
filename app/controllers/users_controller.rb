@@ -20,12 +20,8 @@ class UsersController < ApplicationController
 
   private
 
-  def user_params
-    params.require(:user).permit(:profile[:personaldata]['name'], :profile[:personaldata]['phone'])
-  end
-
   def find_user
-    @user = User.preload(:profile).find(params[:id])
+    @user = User.preload(:profile, :calendar).find(params[:id])
   end
 
 end

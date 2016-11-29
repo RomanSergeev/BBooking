@@ -2,6 +2,26 @@ html, body {
   height: 100%;
 }
 
+.register-form input[type=text],
+.register-form input[type=email],
+.register-form input[type=password] {
+  @extend .form-control;
+}
+
+a:not([class]),
+input[type=submit]:not([class]) {
+  @extend .btn, .btn-primary;
+}
+
+.edit-buttons a {
+  width: 100%;
+  text-align: center;
+}
+
+.edit-buttons a:not(:last-child) {
+  margin-bottom: 20px;
+}
+
 .field.form-group>div {
   display: inline;
 }
@@ -44,8 +64,23 @@ html, body {
   right: 1%;
 }
 
-.label.label-warning {
+.label.label-warning,
+.label.label-info {
   border-radius: 50%;
+}
+
+.label.label-info {
+  opacity: 0;
+  margin-right: 5px;
+  -webkit-transition: opacity .5s;
+  -moz-transition: opacity .5s;
+  -o-transition: opacity .5s;
+  transition: opacity .5s;
+}
+
+label:hover + .label-info,
+.label-info:hover {
+  opacity: 1;
 }
 
 .form-control.has-warning {
@@ -53,9 +88,15 @@ html, body {
   width: calc(100% - 30px);
 }
 
-.popover-title,
-.popover-content {
-  background: linear-gradient( to right, white, #f0ad4e );}
+.label-warning+.popover .popover-title,
+.label-warning+.popover .popover-content {
+  background: linear-gradient( to right, white, #f0ad4e );
+}
+
+.label-info+.popover .popover-title,
+.label-info+.popover .popover-content {
+  background: linear-gradient( to right, white, #31b0d5 );
+}
 
 .link-logout {
   margin-top: 5px;

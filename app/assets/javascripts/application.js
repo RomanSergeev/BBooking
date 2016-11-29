@@ -15,11 +15,3 @@
 //= require bootstrap-sprockets
 //= require global
 //= require_tree .
-
-$(document).ready(function(){
-  $('[data-toggle="popover"]').popover();
-});
-
-function changeInputValue(input, value) {
-  input.value = value;
-}

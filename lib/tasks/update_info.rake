@@ -1,4 +1,4 @@
-namespace :profiles do
+namespace :profile do
   task update_info: :environment do
     User.all.each do |user|
       unless Profile.exists?(user_id: user.id)
