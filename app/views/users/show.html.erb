@@ -1,4 +1,14 @@
 <% profile_json = @user.profile.present? ? @user.profile.personaldata : {} %>
+<% if @user.errors.any? %>
+  <div id="error_explanation" class="notshown">
+    <ul>
+      <% @user.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+
 <div class="row row-eq-height">
   <div class="col-sm-3">
     <div class="user-photo">User photo</div>

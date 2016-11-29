@@ -69,18 +69,18 @@ input[type=submit]:not([class]) {
   border-radius: 50%;
 }
 
+label:hover + .label-info,
+.label-info:hover {
+  opacity: 1;
+}
+
 .label.label-info {
   opacity: 0;
   margin-right: 5px;
   -webkit-transition: opacity .5s;
-  -moz-transition: opacity .5s;
-  -o-transition: opacity .5s;
-  transition: opacity .5s;
-}
-
-label:hover + .label-info,
-.label-info:hover {
-  opacity: 1;
+     -moz-transition: opacity .5s;
+       -o-transition: opacity .5s;
+          transition: opacity .5s;
 }
 
 .form-control.has-warning {

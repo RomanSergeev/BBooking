@@ -3,12 +3,6 @@ class ServicesController < ApplicationController
   include ServicesService
   layout 'user' # TODO change to services new own layout
 
-  # GET /services
-  # GET /services.json
-  def index
-    @services = Service.all
-  end
-
   # GET /services/1
   # GET /services/1.json
   def show
@@ -17,6 +11,7 @@ class ServicesController < ApplicationController
 
   # GET /services/new
   def new
+    require_profile
     @service = Service.new
     @service.user_id = current_user.id
   end

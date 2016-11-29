@@ -1,16 +1,23 @@
+<% jsonb = @service.servicedata %>
 <div class="row">
   <div class="col-sm-10">
     <p id="notice"><%= notice %></p>
 
-    <h2>Service <b><%= @service.servicedata['name'] %></b></h2>
+    <h2>Service <b><%= jsonb['name'] %></b></h2>
     <br/>
 
     <b>Provided by </b> <%= @provider.profile.personaldata['name'] %>
+    <br/><br/>
+
+    <b>Average duration </b> <%= jsonb['duration'] %> minutes
+    <br/><br/>
+
+    <b>Description</b>
     <br/>
 
-    <b>Average duration </b> <%= @service.servicedata['duration'] %> minutes
-    <br/>
+    <%= jsonb['description'] || 'No description provided.' %>
   </div>
+
   <div class="col-sm-2 edit-buttons">
     <% if @provider.id == current_user.id %>
       <%= link_to 'Edit service', edit_service_path(@service)%>
