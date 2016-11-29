@@ -14,19 +14,20 @@ class CalendarsController < ApplicationController
     find_user
     require_permission
     require_profile
-    set_calendar
   end
 
   def update
     find_user
     require_permission
     require_profile
-    set_calendar
-    @user.calendar.preferences = params[:calendar][:preferences]
-    if @user.calendar.update(calendar_params)
-      redirect_to user_calendar_path
-    else
-      render 'edit'
+    json = params[:calendar][:preferences]
+    if check_for_correct_calendar_data?(json)
+      @user.calendar.preferences = json
+      if @user.calendar.update(calendar_params)
+        redirect_to user_calendar_path
+      else
+        render 'edit'
+      end
     end
   end
 

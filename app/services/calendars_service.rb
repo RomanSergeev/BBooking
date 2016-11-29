@@ -26,6 +26,27 @@ module CalendarsService
     @settings = get_data_for_timeline(@user)
   end
 
+  def check_for_correct_calendar_data?(json)
+    serving_start = json['serving_start'].to_i
+    break_start = json['break_start'].to_i
+    break_finish = json['break_finish'].to_i
+    serving_finish = json['serving_finish'].to_i
+    rest_time = json['rest_time'].to_i
+    unless
+      serving_start >= 0 and
+      break_start >= serving_start and
+      break_finish >= break_start and
+      serving_finish >= break_finish and
+      serving_finish <= CalendarsController::MINUTES_IN_DAY and
+      rest_time >= 0 and
+      rest_time <= 60
+      redirect_to user_path(@user),
+                  notice: 'Parameters for calendar seem to be incorrect.'
+      return false
+    end
+    true
+  end
+
   def get_data_for_timeline(user)
     my_orders = Order.where(customer_id: user.id)
     query = Service.where(user_id: user.id).ids

@@ -5,36 +5,26 @@
 $(document).ready(function() {
   $('[data-toggle="popover"]').popover();
 
+  var two_side_updater = [
+    function (elems) {
+      return function () {
+        elems[1].value = elems[0].value;
+      }
+    },
+    function (elems) {
+      return function () {
+        elems[0].value = elems[1].value;
+      }
+    }
+  ];
   bind_updater([
     $('#service\\[servicedata\\]\\[duration\\]')[0],
     $('#rangeDoubler')[0]
-  ], [
-    function (elems) {
-      return function () {
-        elems[1].value = elems[0].value;
-      }
-    },
-    function (elems) {
-      return function () {
-        elems[0].value = elems[1].value;
-      }
-    }
-  ]);
+  ], two_side_updater);
   bind_updater([
     $('#calendar\\[preferences\\]\\[rest_time\\]')[0],
     $('#restTimeDoubler')[0]
-  ], [
-    function (elems) {
-      return function () {
-        elems[1].value = elems[0].value;
-      }
-    },
-    function (elems) {
-      return function () {
-        elems[0].value = elems[1].value;
-      }
-    }
-  ]);
+  ], two_side_updater);
   var time_inputs_updater = [
     function (elems) {
       return function () {
@@ -70,6 +60,7 @@ $(document).ready(function() {
   }
   // FIXME changing 'doubler' values doesn't affect other inputs
   for (i = 0; i < headInputs.length; i++) {
+    if (!headInputs[i]) return;
     headInputs[i].addEventListener('input', function (j) {
       return function() {
         for (var k = 0; k < headInputs.length; k++) {
