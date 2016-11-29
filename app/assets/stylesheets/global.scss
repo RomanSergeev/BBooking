@@ -70,7 +70,7 @@ input[type=submit]:not([class]) {
 }
 
 label:hover + .label-info,
-.label-info:hover {
+.label.label-info:hover {
   opacity: 1;
 }
 
