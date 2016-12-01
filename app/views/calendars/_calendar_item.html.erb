@@ -1,0 +1,30 @@
+<h6><%= order[:customer_id] %></h6>
+<% my_order = order[:customer_id] == current_user.id
+  sided_order = !my_order && order[:provider_id] != current_user.id
+  class_name = my_order ? 'tl-my-order' : sided_order ? 'tl-sided-order' : 'tl-ordered-at-me'
+  title = my_order ? 'I\'ve ordered' : "#{user.profile.personaldata['name']} has ordered"
+  time = DateTime.parse(order[:start_time])
+  dur = order[:duration].to_i
+  minutes = time.hour * 60 + time.min
+  description = "Service id: #{order[:service_id]}," +
+      "start at: #{time.strftime('%-d.%m.%y %H:%M')}," +
+      "duration: #{dur} minutes."
+%>
+<div class="timeline <%= class_name %>" style=
+  "width: <%= width(dur) %>%;
+  left: <%= width(minutes) %>%"
+  data-toggle="popover"
+  data-trigger="hover"
+  data-placement="top"
+  data-content="<%= description %>"
+  data-original-title="<%= title %>">
+</div>
+<div class="timeline tl-rest-time" style=
+  "width: <%= width(order[:rest_time]) %>%;
+  left: <%= width(dur + minutes) %>%"
+  data-toggle="popover"
+  data-trigger="hover"
+  data-placement="top"
+  data-content="rest after service for <%= order[:rest_time] %> minutes."
+  data-original-title="Rest time">
+</div>

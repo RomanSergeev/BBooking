@@ -11,19 +11,20 @@ module CalendarsService
     end
   end
 
-  def require_profile
-    user = current_user.id == params[:user_id].to_i ? current_user : @user
-    unless user.profile.present?
-      redirect_to user_path(user),
-                  notice: user.id == current_user.id ?
-                    'You have no profile data so your calendar page is unavailable.' :
-                    'User has no profile data so his calendar page is unavailable.'
-    end
-  end
-
   # Use callbacks to share common setup or constraints between actions.
   def set_calendar
     @settings = get_data_for_timeline(@user)
+  end
+
+  def get_data_for_timeline(user)
+    my_orders = ApplicationRecord.connection.execute(my_orders_sql(user.id.to_s))
+    ordered_at_me = ApplicationRecord.connection.execute(ordered_at_me_sql(user.id.to_s))
+    # my_orders.or(ordered_at_me) means all the orders displayed at calendar
+
+    # maybe adding user here is a bad practice
+    {user: user,
+     my_orders: my_orders,
+     ordered_at_me: ordered_at_me}
   end
 
   def check_for_correct_calendar_data?(json)
@@ -33,7 +34,7 @@ module CalendarsService
     serving_finish = json['serving_finish'].to_i
     rest_time = json['rest_time'].to_i
     unless
-      serving_start >= 0 and
+    serving_start >= 0 and
       break_start >= serving_start and
       break_finish >= break_start and
       serving_finish >= break_finish and
@@ -47,16 +48,25 @@ module CalendarsService
     true
   end
 
-  def get_data_for_timeline(user)
-    my_orders = Order.where(customer_id: user.id)
-    query = Service.where(user_id: user.id).ids
-    ordered_at_me = Order.where('service_id in (:ids)', ids: query)
-    # my_orders.or(ordered_at_me) means all the orders displayed at calendar
+  private
 
-    {is_mine: user.id == current_user.id,
-     calendar: user.calendar,
-     my_orders: my_orders,
-     ordered_at_me: ordered_at_me}
+  def my_orders_sql(user_id)
+    'SELECT orders.*, users.id provider_id
+    FROM orders
+    JOIN services ON orders.service_id = services.id
+    JOIN users ON services.user_id = users.id
+    WHERE orders.service_id IN (
+      SELECT id FROM services WHERE orders.customer_id = ' + user_id +
+    ')'
+  end
+
+  def ordered_at_me_sql(user_id)
+    'SELECT orders.*, ' + user_id + ' provider_id, profiles.personaldata personal_info
+    FROM orders
+    JOIN profiles ON profiles.user_id = orders.customer_id
+    WHERE service_id IN (
+      SELECT id FROM services WHERE user_id = ' + user_id +
+    ')'
   end
 
 end

@@ -26,8 +26,8 @@
 .timeline.tl-free .timeline:after {
   content: "";
   position: absolute;
-  width: 1px;
-  height: 150%;
+  //width: 1px;
+  //height: 150%;
   bottom: 0;
   background: black;
 }
@@ -42,4 +42,20 @@
 
 .tl-out-of-work {
   @include striped-bg(#888);
+}
+
+.tl-my-order {
+  @include striped-bg(#fc0);
+}
+
+.tl-ordered-at-me {
+  @include striped-bg(#f60);
+}
+
+.tl-sided-order {
+  @include striped-bg(#f20);
+}
+
+.tl-rest-time {
+  @include striped-bg(#008);
 }

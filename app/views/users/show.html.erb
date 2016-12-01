@@ -63,8 +63,8 @@
 
   <div class="col-sm-2 col-sm-push-1 edit-buttons">
     <% if current_user.id == @user.id %>
-      <%= link_to 'Manage my services', edit_services_path %>
       <% if @user.profile.present? %>
+        <%= link_to 'Manage my services', edit_services_path %>
         <%= link_to 'Edit my profile', edit_profile_path(@user.profile) %>
         <%= link_to 'Show my calendar', user_calendar_path(@user) %>
       <% else %>

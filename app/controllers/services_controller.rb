@@ -1,4 +1,5 @@
 class ServicesController < ApplicationController
+  include UsersService
   include CalendarsService
   include ServicesService
   layout 'user' # TODO change to services new own layout
@@ -70,6 +71,7 @@ class ServicesController < ApplicationController
   end
 
   def book
+    require_profile
     set_service
     prevent_own_booking
     @my_calendar_data = get_data_for_timeline(current_user)

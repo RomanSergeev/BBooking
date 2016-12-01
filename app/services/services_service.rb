@@ -6,13 +6,6 @@ module ServicesService
     @provider = User.preload(:profile).find(@service.user_id)
   end
 
-  def require_profile
-    unless current_user.profile.present?
-      redirect_to user_path(current_user),
-                  notice: 'You can\'t create any services while no information about you is present.'
-    end
-  end
-
   def require_permission
     if @provider.id != current_user.id
       redirect_to user_path(current_user),
@@ -29,7 +22,7 @@ module ServicesService
 
   def check_booking_available_conditions(user, service, order_time)
     # TODO all checks seems to look different.
-    if order_time <= DateTime.now or user.id == service.user_id
+    if order_time <= Time.now or user.id == service.user_id
       redirect_to :back
     end
   end
