@@ -5,9 +5,6 @@
   break_start = (prefs['break_start'] && prefs['break_finish']) ? prefs['break_start'] : nil
   break_finish = (prefs['break_start'] && prefs['break_finish']) ? prefs['break_finish'] : nil
 %>
-<%= "Watching on #{settings[:user].id}'s calendar" %>
-<br/>
-<%= "We are #{current_user.id}" %>
 <div class="timeline tl-free">
   <div class="timeline tl-out-of-work" style="width: <%= width(serving_start) %>%"></div>
   <div class="timeline tl-out-of-work" style="width: <%= 100 - width(serving_finish) %>%;

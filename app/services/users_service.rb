@@ -1,7 +1,7 @@
 module UsersService
 
   def find_user
-    @user = User.preload(:profile, :calendar).find(params[:id])
+    @user = User.preload(:profile, :calendar).find(params[:id] || params[:user_id])
   end
 
   def require_profile(user = current_user)

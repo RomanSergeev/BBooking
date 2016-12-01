@@ -51,22 +51,38 @@ module CalendarsService
   private
 
   def my_orders_sql(user_id)
-    'SELECT orders.*, users.id provider_id
+    'SELECT
+      orders.*,
+      users.id provider_id,
+      profiles.personaldata customer_personal_info,
+      services.servicedata service_info
     FROM orders
     JOIN services ON orders.service_id = services.id
     JOIN users ON services.user_id = users.id
+    JOIN profiles ON profiles.user_id = orders.customer_id
     WHERE orders.service_id IN (
       SELECT id FROM services WHERE orders.customer_id = ' + user_id +
-    ')'
+    ')
+    AND orders.start_time BETWEEN
+      (SELECT TIMESTAMP \'today\') AND
+      (SELECT TIMESTAMP \'tomorrow\')'
   end
 
   def ordered_at_me_sql(user_id)
-    'SELECT orders.*, ' + user_id + ' provider_id, profiles.personaldata personal_info
+    'SELECT
+      orders.*, ' +
+      user_id + ' provider_id,
+      profiles.personaldata customer_personal_info,
+      services.servicedata service_info
     FROM orders
     JOIN profiles ON profiles.user_id = orders.customer_id
-    WHERE service_id IN (
+    JOIN services ON services.id = orders.service_id
+    WHERE orders.service_id IN (
       SELECT id FROM services WHERE user_id = ' + user_id +
-    ')'
+    ')
+    AND orders.start_time BETWEEN
+      (SELECT TIMESTAMP \'today\') AND
+      (SELECT TIMESTAMP \'tomorrow\')'
   end
 
 end
