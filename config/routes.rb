@@ -1,8 +1,10 @@
 Rails.application.routes.draw do
   get 'users/:id/edit_services', to: 'users#edit_services', as: 'edit_services'
+  get 'users/:id/show_services', to: 'users#show_services', as: 'show_services'
   devise_for :users, controllers: {registrations: "registrations"}
   resources :users
   resources :profiles, except: [:show, :index]
+  resources :services, except: [:index]
   get 'welcome/index'
   root 'welcome#index'
 

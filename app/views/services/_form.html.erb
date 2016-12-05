@@ -1,0 +1,43 @@
+<%= form_for(service) do |f| %>
+  <% if service.errors.any? %>
+    <div id="error_explanation" class="notshown">
+      <h2><%= pluralize(service.errors.count, 'error') %>
+        prohibited this service from being saved:</h2>
+
+      <ul>
+      <% service.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <% name = @service.servicedata['name'] %>
+  <% duration = @service.servicedata['duration'] || 15 %>
+
+  <label for="service[servicedata][name]">Service name</label>
+  <input type="text"
+         id="service[servicedata][name]"
+         name="service[servicedata][name]"
+         class="form-control"
+         value="<%= name %>" />
+  <br/>
+  <label for="service[servicedata][duration]">Average duration</label>
+  <input type="number"
+         id="rangeDoubler"
+         name="rangeDoubler"
+         min="1"
+         max="120"
+         oninput="changeInputValue($('#service\\[servicedata\\]\\[duration\\]')[0], this.value)"
+         value="<%= duration %>" />
+  minutes
+  <input type="range"
+         id="service[servicedata][duration]"
+         name="service[servicedata][duration]"
+         min="1"
+         max="120"
+         oninput="changeInputValue($('#rangeDoubler')[0], this.value)"
+         class="form-control"
+         value="<%= duration %>" />
+  <br/>
+  <%= f.submit class: 'btn btn-primary' %>
+<% end %>

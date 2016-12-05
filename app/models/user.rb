@@ -8,5 +8,6 @@ class User < ApplicationRecord
          :trackable,
          :validatable
   has_one :profile
+  has_many :services
 
 end
