@@ -6,6 +6,14 @@ module ServicesService
     @provider = User.preload(:profile).find(@service.user_id)
   end
 
+  def init_presenter
+    @services_presenter = ServicesPresenter.new
+  end
+
+  def init_calendars_presenter
+    @calendars_presenter = CalendarsPresenter.new(current_user.id)
+  end
+
   def require_permission
     if @provider.id != current_user.id
       redirect_to user_path(current_user),

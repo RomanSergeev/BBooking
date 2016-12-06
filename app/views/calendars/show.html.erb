@@ -1,16 +1,17 @@
-<% is_mine = @settings[:user].id == current_user.id %>
 <div class="row">
   <div class="col-sm-9">
-    <h2><%= is_mine ?
-                'My current calendar:' :
-                @user.profile.personaldata['name'] + '\'s calendar:' %></h2>
-    <br/><br/>
-    <%= render 'calendars/calendar_timeline', settings: @settings %>
+    <h2><%= view_data[:calendar_title_text] %></h2>
+    <br/>
+    <br/>
+    <%= render 'calendars/calendar_timeline',
+               view_data: @calendars_presenter.calendar_timeline_data(view_data[:timeline_data], @user.id),
+               settings: @settings %>
+    <%= render 'calendars/calendar_legend' %>
   </div>
   <div class="col-sm-2 col-sm-push-1 edit-buttons">
-    <% if is_mine %>
+    <% if view_data[:is_mine] %>
       <%= link_to 'My homepage', user_path(current_user) %>
-      <%= link_to 'Manage my services', edit_services_path(@settings[:user].id) %>
+      <%= link_to 'Manage my services', edit_services_path(view_data[:id]) %>
       <%= link_to 'Calendar preferences', edit_user_calendar_path %>
     <% else %>
       <%= link_to 'Back', :back %>

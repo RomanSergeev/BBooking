@@ -46,3 +46,4 @@ bower.json
 
 docker-compose.override.yml
 tstdir/
+app/util/test_template.rb

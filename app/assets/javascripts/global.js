@@ -2,6 +2,12 @@
  * Created by roman on 07.11.16.
  */
 
+/**
+ * @see CalendarsService::TIMELINE_PERCENT
+ * @type {number}
+ */
+var TIMELINE_PERCENT = 14.4;
+
 $(document).ready(function() {
   $('[data-toggle="popover"]').popover();
 
@@ -18,13 +24,36 @@ $(document).ready(function() {
     }
   ];
   bind_updater([
-    $('#service\\[servicedata\\]\\[duration\\]')[0],
-    $('#rangeDoubler')[0]
+    by_id('service\\[servicedata\\]\\[rest_time\\]'),
+    by_id('restDoubler')
   ], two_side_updater);
   bind_updater([
-    $('#calendar\\[preferences\\]\\[rest_time\\]')[0],
-    $('#restTimeDoubler')[0]
+    by_id('service\\[servicedata\\]\\[duration\\]'),
+    by_id('rangeDoubler')
   ], two_side_updater);
+  bind_updater([
+    by_id('calendar\\[preferences\\]\\[rest_time\\]'),
+    by_id('restTimeDoubler')
+  ], two_side_updater);
+  bind_updater([
+    by_id('bookAtHours'),
+    by_id('bookAtMinutes'),
+    by_id('calendar-runner')
+  ], [
+    function(elems) {
+      return function() {
+        elems[2].style.left = calculate_left_offset(int(elems[0].value), int(elems[1].value)) + '%';
+      }
+    },
+    function(elems) {
+      return function() {
+        elems[2].style.left = calculate_left_offset(int(elems[0].value), int(elems[1].value)) + '%';
+      }
+    },
+    function(elems) {
+      return function() {}
+    }
+  ]);
   var time_inputs_updater = [
     function (elems) {
       return function () {
@@ -44,16 +73,16 @@ $(document).ready(function() {
     }
   ];
   var headInputs = [
-    $('#calendar\\[preferences\\]\\[serving_start\\]')[0],
-    $('#calendar\\[preferences\\]\\[break_start\\]')[0],
-    $('#calendar\\[preferences\\]\\[break_finish\\]')[0],
-    $('#calendar\\[preferences\\]\\[serving_finish\\]')[0]
+    by_id('calendar\\[preferences\\]\\[serving_start\\]'),
+    by_id('calendar\\[preferences\\]\\[break_start\\]'),
+    by_id('calendar\\[preferences\\]\\[break_finish\\]'),
+    by_id('calendar\\[preferences\\]\\[serving_finish\\]')
   ];
   var groups = [
-    [headInputs[0], $('#startDoublerHours')[0], $('#startDoublerMinutes')[0]],
-    [headInputs[1], $('#breakStartDoublerHours')[0], $('#breakStartDoublerMinutes')[0]],
-    [headInputs[2], $('#breakFinishDoublerHours')[0], $('#breakFinishDoublerMinutes')[0]],
-    [headInputs[3], $('#finishDoublerHours')[0], $('#finishDoublerMinutes')[0]]
+    [headInputs[0], by_id('startDoublerHours'), by_id('startDoublerMinutes')],
+    [headInputs[1], by_id('breakStartDoublerHours'), by_id('breakStartDoublerMinutes')],
+    [headInputs[2], by_id('breakFinishDoublerHours'), by_id('breakFinishDoublerMinutes')],
+    [headInputs[3], by_id('finishDoublerHours'), by_id('finishDoublerMinutes')]
   ];
   for (var i = 0; i < groups.length; i++) {
     bind_updater(groups[i], time_inputs_updater);
@@ -75,6 +104,16 @@ $(document).ready(function() {
   }
 });
 
+function calculate_left_offset(hours, minutes) {
+  return (hours * 60 + minutes) / TIMELINE_PERCENT;
+}
+
+function disable_rest_time_inputs(elem) {
+  by_id('service\\[servicedata\\]\\[rest_time\\]').disabled =
+  by_id('restDoubler').disabled =
+  elem.checked;
+}
+
 function prepareAndFireEvent(elem) {
   var event = document.createEvent("HTMLEvents");
   event.initEvent("input", true, true);
@@ -84,6 +123,10 @@ function prepareAndFireEvent(elem) {
 
 function int(value) {
   return parseInt(value);
+}
+
+function by_id(id) {
+  return $('#' + id)[0];
 }
 
 function bind_updater(elems, functions) {

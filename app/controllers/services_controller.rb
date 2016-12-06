@@ -8,6 +8,8 @@ class ServicesController < ApplicationController
   # GET /services/1.json
   def show
     set_service
+    init_presenter
+    render 'show', locals: { view_data: @services_presenter.show_data(@service.servicedata) }
   end
 
   # GET /services/new
@@ -21,6 +23,7 @@ class ServicesController < ApplicationController
   def edit
     set_service
     require_permission
+    init_presenter
   end
 
   # POST /services
@@ -74,8 +77,14 @@ class ServicesController < ApplicationController
     require_profile
     set_service
     prevent_own_booking
+    init_calendars_presenter
     @my_calendar_data = get_data_for_timeline(current_user)
     @provider_calendar_data = get_data_for_timeline(@provider)
+    @free_intervals = IntervalSet::availability_intervals(
+      @my_calendar_data[:free_time_intervals],
+      @provider_calendar_data[:free_time_intervals],
+      @service.servicedata['duration'].to_i
+    )
   end
 
   private

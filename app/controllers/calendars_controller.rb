@@ -1,20 +1,22 @@
 class CalendarsController < ApplicationController
   include CalendarsService
   include UsersService
-  MINUTES_IN_DAY = 1440
-  TIMELINE_PERCENT = 1440 / 100.0
   layout 'user'
 
   def show
     find_user
     require_profile(@user)
+    init_presenter
     set_calendar
+    render 'show', locals: { view_data: @calendars_presenter.show_data(@user) }
   end
 
   def edit
     find_user
     require_permission
     require_profile(@user)
+    init_presenter
+    render 'edit', locals: { view_data: @calendars_presenter.edit_data(@user.calendar) }
   end
 
   def update
@@ -27,7 +29,8 @@ class CalendarsController < ApplicationController
       if @user.calendar.update(calendar_params)
         redirect_to user_calendar_path
       else
-        render 'edit'
+        init_presenter
+        render 'edit', locals: { view_data: @calendars_presenter.edit_data(@user.calendar) }
       end
     end
   end

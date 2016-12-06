@@ -1,5 +1,12 @@
 module CalendarsService
 
+  MINUTES_IN_DAY = 1440
+  TIMELINE_PERCENT = 1440 / 100.0
+
+  def init_presenter
+    @calendars_presenter = CalendarsPresenter.new(current_user.id)
+  end
+
   def find_user
     @user = User.preload(:profile, :calendar).find(params[:user_id])
   end
@@ -22,9 +29,31 @@ module CalendarsService
     # my_orders.or(ordered_at_me) means all the orders displayed at calendar
 
     # maybe adding user here is a bad practice
-    {user: user,
-     my_orders: my_orders,
-     ordered_at_me: ordered_at_me}
+    {
+      user: user,
+      my_orders: my_orders,
+      ordered_at_me: ordered_at_me,
+      free_time_intervals: get_free_interval_sets(user, my_orders, ordered_at_me)
+    }
+  end
+
+  def get_free_interval_sets(user, user_orders, orders_at_user)
+    ultimate_set = IntervalSet.new([0..MINUTES_IN_DAY - 1])
+    prefs = user.calendar.preferences
+    ultimate_set.exclude!(0..prefs['serving_start'].to_i)
+    ultimate_set.exclude!(prefs['break_start'].to_i..prefs['break_finish'].to_i)
+    ultimate_set.exclude!(prefs['serving_finish'].to_i..MINUTES_IN_DAY - 1)
+    user_orders.each do |order|
+      start_time = DateTime.parse(order['start_time'])
+      start_minutes = start_time.hour * 60 + start_time.min
+      ultimate_set.exclude!(start_minutes..start_minutes + order['duration'] + order['rest_time'])
+    end
+    orders_at_user.each do |order|
+      start_time = DateTime.parse(order['start_time'])
+      start_minutes = start_time.hour * 60 + start_time.min
+      ultimate_set.exclude!(start_minutes..start_minutes + order['duration'] + order['rest_time'])
+    end
+    ultimate_set
   end
 
   def check_for_correct_calendar_data?(json)
@@ -38,7 +67,7 @@ module CalendarsService
       break_start >= serving_start and
       break_finish >= break_start and
       serving_finish >= break_finish and
-      serving_finish <= CalendarsController::MINUTES_IN_DAY and
+      serving_finish <= MINUTES_IN_DAY and
       rest_time >= 0 and
       rest_time <= 60
       redirect_to user_path(@user),

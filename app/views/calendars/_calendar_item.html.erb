@@ -1,33 +1,18 @@
-<% my_order = order[:customer_id] == current_user.id
-  ordered_at_me = order[:provider_id] == current_user.id
-  class_name = my_order ? 'tl-my-order' : ordered_at_me ? 'tl-ordered-at-me' : 'tl-sided-order'
-  profile_info = JSON.parse(order[:customer_personal_info])
-  service_info = JSON.parse(order[:service_info])
-  title = my_order ? 'I\'ve ordered' : "#{profile_info['name']} has ordered"
-  time = DateTime.parse(order[:start_time])
-  dur = order[:duration].to_i
-  minutes = time.hour * 60 + time.min
-  description = "Service #{service_info['name']} " +
-      "starts at #{time.strftime('%H:%M')} " +
-      "and lasts #{dur} minutes."
-%>
-<div class="timeline <%= class_name %>" style=
-  "width: <%= width(dur) %>%;
-  left: <%= width(minutes) %>%"
+<div class="timeline <%= view_data[:class_name] %>" style=
+  "<%= format_width_and_left(view_data[:duration], view_data[:minutes]) %>"
   data-toggle="popover"
   data-trigger="hover"
   data-placement="top"
-  data-content="<%= description %>"
-  data-original-title="<%= title %>">
+  data-content="<%= view_data[:description] %>"
+  data-original-title="<%= view_data[:title] %>">
 </div>
-<% if order[:rest_time] > 0 %>
+<% if view_data[:should_render_rest] %>
   <div class="timeline tl-rest-time" style=
-    "width: <%= width(order[:rest_time]) %>%;
-    left: <%= width(dur + minutes) %>%"
+    "<%= format_width_and_left(view_data[:rest_time], view_data[:rest_offset]) %>"
     data-toggle="popover"
     data-trigger="hover"
     data-placement="top"
-    data-content="rest after service for <%= order[:rest_time] %> minutes."
+    data-content="rest after service for <%= view_data[:rest_time] %> minutes."
     data-original-title="Rest time">
   </div>
 <% end %>

@@ -1,11 +1,4 @@
-<% prefs = @user.calendar.preferences %>
-<%= form_for (@user.calendar), url: {action: 'update'} do |f| %>
-  <% serving_start = prefs['serving_start'].to_i || 1
-  serving_finish = prefs['serving_finish'].to_i || CalendarsController::MINUTES_IN_DAY - 1
-  break_start = prefs['break_start'].to_i || 0
-  break_finish = prefs['break_finish'].to_i || CalendarsController::MINUTES_IN_DAY - 1
-  rest_time = prefs['rest_time'].to_i || 5
-  %>
+<%= form_for (view_data[:calendar]), url: {action: 'update'} do |f| %>
   <label for="calendar[preferences][serving_start]">Time when you start working:</label>
   <input type="number"
          id="startDoublerHours"
@@ -13,21 +6,21 @@
          min="0"
          max="23"
          step="1"
-         value="<%= serving_start / 60 %>" /> hours
+         value="<%= hours(view_data[:serving_start]) %>" /> hours
   <input type="number"
          id="startDoublerMinutes"
          name="startDoublerMinutes"
          min="0"
          max="59"
          step="1"
-         value="<%= serving_start % 60 %>" /> minutes
+         value="<%= minutes(view_data[:serving_start]) %>" /> minutes
   <input type="range"
          id="calendar[preferences][serving_start]"
          name="calendar[preferences][serving_start]"
          min="0"
-         max="<%= CalendarsController::MINUTES_IN_DAY - 1 %>"
+         max="<%= @calendars_presenter.max_minute %>"
          step="1"
-         value="<%= serving_start %>" />
+         value="<%= view_data[:serving_start] %>" />
 
   <label for="calendar[preferences][serving_finish]">Time when you usually finish working:</label>
   <input type="number"
@@ -36,21 +29,21 @@
          min="0"
          max="23"
          step="1"
-         value="<%= serving_finish / 60 %>" /> hours
+         value="<%= hours(view_data[:serving_finish]) %>" /> hours
   <input type="number"
          id="finishDoublerMinutes"
          name="finishDoublerMinutes"
          min="0"
          max="59"
          step="1"
-         value="<%= serving_finish % 60 %>" /> minutes
+         value="<%= minutes(view_data[:serving_finish]) %>" /> minutes
   <input type="range"
          id="calendar[preferences][serving_finish]"
          name="calendar[preferences][serving_finish]"
          min="0"
-         max="<%= CalendarsController::MINUTES_IN_DAY - 1 %>"
+         max="<%= @calendars_presenter.max_minute %>"
          step="1"
-         value="<%= serving_finish %>" />
+         value="<%= view_data[:serving_finish] %>" />
 
   <label for="calendar[preferences][break_start]">Time to have a break:</label>
   <input type="number"
@@ -59,21 +52,21 @@
          min="0"
          max="23"
          step="1"
-         value="<%= break_start / 60 %>" /> hours
+         value="<%= hours(view_data[:break_start]) %>" /> hours
   <input type="number"
          id="breakStartDoublerMinutes"
          name="breakStartDoublerMinutes"
          min="0"
          max="59"
          step="1"
-         value="<%= break_start % 60 %>" /> minutes
+         value="<%= minutes(view_data[:break_start]) %>" /> minutes
   <input type="range"
          id="calendar[preferences][break_start]"
          name="calendar[preferences][break_start]"
          min="0"
-         max="<%= CalendarsController::MINUTES_IN_DAY - 1 %>"
+         max="<%= @calendars_presenter.max_minute %>"
          step="1"
-         value="<%= break_start %>" />
+         value="<%= view_data[:break_start] %>" />
 
   <label for="calendar[preferences][break_finish]">Time to go back to work:</label>
   <input type="number"
@@ -82,21 +75,21 @@
          min="0"
          max="23"
          step="1"
-         value="<%= break_finish / 60 %>" /> hours
+         value="<%= hours(view_data[:break_finish]) %>" /> hours
   <input type="number"
          id="breakFinishDoublerMinutes"
          name="breakFinishDoublerMinutes"
          min="0"
          max="59"
          step="1"
-         value="<%= break_finish % 60 %>" /> minutes
+         value="<%= minutes(view_data[:break_finish]) %>" /> minutes
   <input type="range"
          id="calendar[preferences][break_finish]"
          name="calendar[preferences][break_finish]"
          min="0"
-         max="<%= CalendarsController::MINUTES_IN_DAY - 1 %>"
+         max="<%= @calendars_presenter.max_minute %>"
          step="1"
-         value="<%= break_finish %>" />
+         value="<%= view_data[:break_finish] %>" />
 
   <label for="calendar[preferences][rest_time]">Average time to take rest between services:</label>
   <span class="label label-info" data-toggle="popover" data-trigger="hover"
@@ -108,7 +101,7 @@
          name="restTimeDoubler"
          min="0"
          max="60"
-         value="<%= rest_time %>" />
+         value="<%= view_data[:rest_time] %>" />
   minutes
   <input type="range"
          id="calendar[preferences][rest_time]"
@@ -116,7 +109,7 @@
          min="0"
          max="60"
          class="form-control"
-         value="<%= rest_time %>" />
+         value="<%= view_data[:rest_time] %>" />
 
   <br/>
   <%= f.submit 'Update' %>

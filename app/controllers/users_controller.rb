@@ -19,6 +19,7 @@ class UsersController < ApplicationController
 
   def show_services
     find_user
+    require_profile(@user)
     @services = Service.where(user_id: @user.id)
     if current_user.id == @user.id
       redirect_to edit_services_path(@user)

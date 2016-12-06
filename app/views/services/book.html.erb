@@ -1,6 +1,17 @@
 <h2>My calendar:</h2>
-<%= render 'calendars/calendar_timeline', settings: @my_calendar_data %>
+<div class="calendars-holder">
+  <%= render 'calendars/calendar_timeline',
+             view_data: @calendars_presenter.calendar_timeline_data(@my_calendar_data[:user].calendar.preferences, current_user.id),
+             settings: @my_calendar_data %>
 <h2><%= @provider.profile.personaldata['name'] %>'s calendar:</h2>
-<%= render 'calendars/calendar_timeline', settings: @provider_calendar_data %>
+  <%= render 'calendars/calendar_timeline',
+             view_data: @calendars_presenter.calendar_timeline_data(@provider_calendar_data[:user].calendar.preferences, @provider.id),
+             settings: @provider_calendar_data %>
+  <%= render 'calendars/calendar_runner', duration: @service.servicedata['duration'], free: @free_intervals %>
+</div>
+<% unless @free_intervals.empty? %>
+  <%= render 'calendars/booking_form', at_time: @free_intervals.start %>
+<% end %>
+<%= render 'calendars/calendar_legend' %>
 <br/>
 <%= link_to 'Back', :back %>

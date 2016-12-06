@@ -71,8 +71,8 @@
         <%= link_to 'Create profile', new_profile_path %>
       <% end %>
     <% else %>
-      <%= link_to 'View services', show_services_path(@user) %>
       <% if @user.profile.present? %>
+        <%= link_to 'View services', show_services_path(@user) %>
         <%= link_to @user.profile.personaldata['name'] + '\'s calendar',
                     user_calendar_path(@user) %>
       <% end %>
