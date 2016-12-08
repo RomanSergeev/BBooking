@@ -23,7 +23,7 @@ module CalendarsService
     @settings = get_data_for_timeline(@user)
   end
 
-  def get_data_for_timeline(user)
+  def get_data_for_timeline(user, is_provider = false)
     my_orders = ApplicationRecord.connection.execute(my_orders_sql(user.id.to_s))
     ordered_at_me = ApplicationRecord.connection.execute(ordered_at_me_sql(user.id.to_s))
     # my_orders.or(ordered_at_me) means all the orders displayed at calendar
@@ -33,25 +33,28 @@ module CalendarsService
       user: user,
       my_orders: my_orders,
       ordered_at_me: ordered_at_me,
-      free_time_intervals: get_free_interval_sets(user, my_orders, ordered_at_me)
+      free_time_intervals: get_free_interval_sets(user, is_provider, my_orders, ordered_at_me)
     }
   end
 
-  def get_free_interval_sets(user, user_orders, orders_at_user)
+  def get_free_interval_sets(user, user_is_provider, user_orders, orders_at_user)
     ultimate_set = IntervalSet.new([0..MINUTES_IN_DAY - 1])
-    prefs = user.calendar.preferences
-    ultimate_set.exclude!(0..prefs['serving_start'].to_i)
-    ultimate_set.exclude!(prefs['break_start'].to_i..prefs['break_finish'].to_i)
-    ultimate_set.exclude!(prefs['serving_finish'].to_i..MINUTES_IN_DAY - 1)
+    if user_is_provider
+      prefs = user.calendar.preferences
+      ultimate_set.exclude!(0..prefs['serving_start'].to_i)
+      ultimate_set.exclude!(prefs['break_start'].to_i..prefs['break_finish'].to_i)
+      ultimate_set.exclude!(prefs['serving_finish'].to_i..MINUTES_IN_DAY - 1)
+    end
     user_orders.each do |order|
       start_time = DateTime.parse(order['start_time'])
       start_minutes = start_time.hour * 60 + start_time.min
-      ultimate_set.exclude!(start_minutes..start_minutes + order['duration'] + order['rest_time'])
+      ultimate_set.exclude!(start_minutes..start_minutes + order['duration'])
     end
     orders_at_user.each do |order|
       start_time = DateTime.parse(order['start_time'])
       start_minutes = start_time.hour * 60 + start_time.min
-      ultimate_set.exclude!(start_minutes..start_minutes + order['duration'] + order['rest_time'])
+      rest_time = order['rest_time'] > 0 ? order['rest_time'] - 1 : 0
+      ultimate_set.exclude!(start_minutes..start_minutes + order['duration'] + rest_time)
     end
     ultimate_set
   end

@@ -7,9 +7,18 @@
   <%= render 'calendars/calendar_timeline',
              view_data: @calendars_presenter.calendar_timeline_data(@provider_calendar_data[:user].calendar.preferences, @provider.id),
              settings: @provider_calendar_data %>
-  <%= render 'calendars/calendar_runner', duration: @service.servicedata['duration'], free: @free_intervals %>
+  <% unless @free_intervals.empty? %>
+    <%= render 'calendars/calendar_runner', duration: @service.servicedata['duration'], free: @free_intervals %>
+  <% end %>
 </div>
 <% unless @free_intervals.empty? %>
+  <script>
+    var free_intervals = [];
+    <% @free_intervals.intervals.each_with_index do |interval, i| %>
+      free_intervals[<%= i %>] = [<%= interval.begin %>, <%= interval.end %>];
+    <% end %>
+    set_global_var(free_intervals);
+  </script>
   <%= render 'calendars/booking_form', at_time: @free_intervals.start %>
 <% end %>
 <%= render 'calendars/calendar_legend' %>

@@ -23,4 +23,22 @@ class ServicesPresenter
     }
   end
 
+  # @param [Date] day
+  # @param [Integer] hours
+  # @param [Integer] minutes
+  def book_payment_data(day, hours, minutes)
+    {
+      day: day,
+      hours: hours,
+      minutes: minutes
+    }
+  end
+
+  # @param [String] message
+  def booking_completed_data(message)
+    {
+      message: message
+    }
+  end
+
 end

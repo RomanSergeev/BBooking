@@ -7,7 +7,7 @@ class UsersController < ApplicationController
   end
 
   def edit_services
-    require_profile
+    require_profile? or return
     find_user
     if current_user.id != @user.id
       redirect_back fallback_location: user_path(current_user),
@@ -19,7 +19,7 @@ class UsersController < ApplicationController
 
   def show_services
     find_user
-    require_profile(@user)
+    require_profile?(@user) or return
     @services = Service.where(user_id: @user.id)
     if current_user.id == @user.id
       redirect_to edit_services_path(@user)

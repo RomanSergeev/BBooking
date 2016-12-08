@@ -13,7 +13,8 @@ class User < ApplicationRecord
   has_many :services
 
   def create_calendar
-    Calendar.create user_id: self.id
+    Calendar.create user_id: self.id, preferences:
+      '{"serving_start": "540", "break_start": "720", "break_finish": "780", "serving_finish": "1080"}'
   end
 
 end

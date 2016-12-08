@@ -1,19 +1,19 @@
 <br/>
 <span>Book this service at:</span>
-<form action="<%= welcome_index_path %>">
-<input type="number"
-       id="bookAtHours"
-       name="bookAtHours"
-       min="0"
-       max="23"
-       step="1"
-       value="<%= hours(at_time) %>" /> hours
-<input type="number"
-       id="bookAtMinutes"
-       name="bookAtMinutes"
-       min="0"
-       max="59"
-       step="1"
-       value="<%= minutes(at_time) %>" /> minutes
-<input type="submit" value="Book" />
-</form>
+<%= form_tag book_payment_path, authenticity_token: form_authenticity_token do %>
+  <input type="number"
+         id="bookAtHours"
+         name="bookAtHours"
+         min="0"
+         max="23"
+         step="1"
+         value="<%= hours(at_time) %>" /> hours
+  <input type="number"
+         id="bookAtMinutes"
+         name="bookAtMinutes"
+         min="0"
+         max="59"
+         step="1"
+         value="<%= minutes(at_time) %>" /> minutes
+  <input type="submit" value="Book" />
+<% end %>

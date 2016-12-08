@@ -4,13 +4,15 @@ module UsersService
     @user = User.preload(:profile, :calendar).find(params[:id] || params[:user_id])
   end
 
-  def require_profile(user = current_user)
+  def require_profile?(user = current_user)
     unless user.profile.present?
       redirect_to user_path(user),
                   notice: 'This action requires ' +
                     (user.id == current_user.id ? 'your' : 'user\'s') +
                     ' profile fulfilled.'
+      return false
     end
+    true
   end
 
 end

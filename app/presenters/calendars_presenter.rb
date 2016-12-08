@@ -27,10 +27,10 @@ class CalendarsPresenter
     rest_time = prefs['rest_time'].to_i || 5
     {
       calendar: calendar,
-      serving_start: serving_start,
+      serving_start: serving_start + 1,
       serving_finish: serving_finish,
       break_start: break_start,
-      break_finish: break_finish,
+      break_finish: break_finish + 1,
       rest_time: rest_time
     }
   end

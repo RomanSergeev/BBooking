@@ -28,11 +28,19 @@ module ServicesService
     end
   end
 
-  def check_booking_available_conditions(user, service, order_time)
-    # TODO all checks seems to look different.
-    if order_time <= Time.now or user.id == service.user_id
-      redirect_to :back
-    end
+  # TODO all checks seems to look different.
+  # @param [User] user
+  # @param [Service] service
+  # @param [DateTime] order_time
+  def booking_is_unavailable?(user, service, order_time)
+    order_time <= Time.new + 6.hours or user.id == service.user_id
+  end
+
+  # @param [Date] day
+  # @param [String] hours
+  # @param [String] minutes
+  def format_booking_date(day, hours, minutes)
+    day + hours.to_i.hours + minutes.to_i.minutes
   end
 
 end

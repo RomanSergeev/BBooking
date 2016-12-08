@@ -14,7 +14,7 @@ class ServicesController < ApplicationController
 
   # GET /services/new
   def new
-    require_profile
+    require_profile? or return
     @service = Service.new
     @service.user_id = current_user.id
   end
@@ -74,12 +74,12 @@ class ServicesController < ApplicationController
   end
 
   def book
-    require_profile
+    require_profile? or return
     set_service
     prevent_own_booking
     init_calendars_presenter
     @my_calendar_data = get_data_for_timeline(current_user)
-    @provider_calendar_data = get_data_for_timeline(@provider)
+    @provider_calendar_data = get_data_for_timeline(@provider, true)
     @free_intervals = IntervalSet::availability_intervals(
       @my_calendar_data[:free_time_intervals],
       @provider_calendar_data[:free_time_intervals],
@@ -87,16 +87,54 @@ class ServicesController < ApplicationController
     )
   end
 
+  def book_payment
+    require_profile? or return
+    set_service
+    prevent_own_booking
+    init_presenter
+    day, hours, minutes = Date.today, params[:bookAtHours], params[:bookAtMinutes]
+    # TODO replace Date.today with date from request (date picker)
+    if booking_is_unavailable?(current_user, @service, format_booking_date(day, hours, minutes))
+      puts 'Booking is unavailable!'
+      redirect_to service_path(@service),
+                  notice: 'Something went wrong and booking is unavailable.'
+    else
+      render 'book_payment', locals: {
+        view_data: @services_presenter.book_payment_data(day, hours, minutes)
+      }
+    end
+  end
+
+  def booking_completed
+    require_profile? or return
+    set_service
+    prevent_own_booking
+    init_presenter
+    if booking_performed?(current_user,
+                          @service,
+                          format_booking_date(Date.parse(params[:day]), params[:hours], params[:minutes]))
+      message = 'You\'ve successfully booked the service.'
+    else
+      message = 'Something went wrong and booking was cancelled.'
+    end
+    render 'booking_completed', locals: {
+      view_data: @services_presenter.booking_completed_data(message)
+    }
+  end
+
   private
 
-  def perform_booking(user, service, order_time)
-    check_booking_available_conditions(user, service, order_time)
-    order = Order.new(
-      customer_id: user.id,
-      service_id: service.id,
-      start_time: order_time,
-      duration: service.servicedata['duration'])
-    order.save!
+  def booking_performed?(user, service, order_time)
+    # second check is needed because service may already be booked between user clicks
+    unless booking_is_unavailable?(user, service, order_time)
+      Order.create!(
+        customer_id: user.id,
+        service_id: service.id,
+        start_time: order_time,
+        duration: service.servicedata['duration'])
+      return true
+    end
+    false
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.
