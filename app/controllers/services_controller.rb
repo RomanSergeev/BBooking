@@ -1,5 +1,6 @@
 class ServicesController < ApplicationController
   before_action :set_service, only: [:show, :edit, :update, :destroy]
+  before_action :require_permission, only: [:edit, :update, :destroy]
   layout 'user' # TODO change to services new own layout
 
   # GET /services
@@ -24,9 +25,6 @@ class ServicesController < ApplicationController
 
   # GET /services/1/edit
   def edit
-    if @provider.id != current_user.id
-      redirect_to user_path(current_user), notice: "Editing of other's service is forbidden."
-    end
   end
 
   # POST /services
@@ -77,6 +75,13 @@ class ServicesController < ApplicationController
     def set_service
       @service = Service.find(params[:id])
       @provider = User.preload(:profile).find(@service.user_id)
+    end
+
+    def require_permission
+      if @provider.id != current_user.id
+        redirect_to user_path(current_user),
+                    notice: 'Editing or deleting of other\'s service is forbidden.'
+      end
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

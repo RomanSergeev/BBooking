@@ -4,7 +4,8 @@ class UsersController < ApplicationController
 
   def edit_services
     if current_user.id != @user.id
-      redirect_back fallback_location: user_path(current_user), notice: 'Editing of another user is forbidden.'
+      redirect_back fallback_location: user_path(current_user),
+                    notice: 'Editing of another user is forbidden.'
     else
       @services = Service.where(user_id: @user.id)
     end
