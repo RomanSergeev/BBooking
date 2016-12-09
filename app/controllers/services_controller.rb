@@ -15,6 +15,7 @@ class ServicesController < ApplicationController
   # GET /services/new
   def new
     require_profile? or return
+    init_presenter
     @service = Service.new
     @service.user_id = current_user.id
   end
@@ -29,17 +30,25 @@ class ServicesController < ApplicationController
   # POST /services
   # POST /services.json
   def create
+
     @service = Service.new(service_params)
     @service.user_id = current_user.id
     @service.servicedata = params[:service][:servicedata]
 
     respond_to do |format|
       if @service.save
-        format.html { redirect_to show_services_path(current_user.id), notice: 'Service was successfully created.' }
-        format.json { render :show, status: :created, location: @service }
+        format.html { redirect_to show_services_path(current_user.id),
+                                  notice: 'Service was successfully created.' }
+        format.json { render :show,
+                             locals: { view_data: @services_presenter.show_data(@service.servicedata) },
+                             status: :created,
+                             location: @service }
       else
-        format.html { render :new }
-        format.json { render json: @service.errors, status: :unprocessable_entity }
+        init_presenter
+        format.html { render :new,
+                             locals: { view_data: @services_presenter.form_data(@service.servicedata) } }
+        format.json { render json: @service.errors,
+                             status: :unprocessable_entity }
       end
     end
   end

@@ -1,18 +1,9 @@
 <%= form_for(service) do |f| %>
-  <% if service.errors.any? %>
-    <div id="error_explanation" class="notshown">
-      <h2><%= pluralize(service.errors.count, 'error') %>
-        prohibited this service from being saved:</h2>
-
-      <ul>
-      <% service.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
-
   <label for="service[servicedata][name]">Service name</label>
+  <% if service.errors[:name].any? %>
+    <span class="label label-warning" data-toggle="popover" data-trigger="hover"
+          data-content="<%= service.errors[:name][0] %>" data-original-title="Warning">!</span>
+  <% end %>
   <input type="text"
          id="service[servicedata][name]"
          name="service[servicedata][name]"
