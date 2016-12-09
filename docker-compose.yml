@@ -12,6 +12,7 @@ services:
    context: .
    dockerfile: ./docker/ruby/Dockerfile
   volumes:
-   - ./:/project
+   - ./:/home/dockeruser/project
+   - /usr/local/bundle # Сюда ставятся гемы в контейнере (можно использовать как кэш)
   command:
-   bundle exec rails server -b 0.0.0.0
+   bash -c "bundle install && bundle exec rails server -b 0.0.0.0"

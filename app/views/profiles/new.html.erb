@@ -1,0 +1,7 @@
+<h2>Create your profile</h2>
+<br/>
+
+<%= render 'register_form', profile: @profile %>
+
+<br/>
+<%= link_to params[:from_creation] ? 'Skip' : 'Back', user_path(current_user), class: 'btn btn-primary' %>

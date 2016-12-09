@@ -1,0 +1,10 @@
+<h1>Editing Service</h1>
+
+<%= render 'form', service: @service %>
+
+<br/>
+<% if service_url(@service) != _back_url %>
+  <%= link_to 'Show', @service, class: 'btn btn-primary' %>
+  <br/><br/>
+<% end %>
+<%= link_to 'Back', :back, class: 'btn btn-primary' %>

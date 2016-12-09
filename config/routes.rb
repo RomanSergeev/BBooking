@@ -1,5 +1,11 @@
 Rails.application.routes.draw do
-  resources :articles
+  get 'users/:id/edit_services', to: 'users#edit_services', as: 'edit_services'
+  get 'users/:id/show_services', to: 'users#show_services', as: 'show_services'
+  get 'search', to: 'application#search', as: 'search'
+  devise_for :users, controllers: {registrations: "registrations"}
+  resources :users
+  resources :profiles, except: [:show, :index]
+  resources :services, except: [:index]
   get 'welcome/index'
   root 'welcome#index'
 

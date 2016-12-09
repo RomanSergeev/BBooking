@@ -1,0 +1,84 @@
+html, body {
+  height: 100%;
+}
+
+.field.form-group>div {
+  display: inline;
+}
+
+.wrapper {
+  min-height: calc(100% - 132px);
+}
+
+.notshown:empty {
+  display: none;
+}
+
+.navbar-header {
+  width: 100%;
+}
+
+.navbar-header #global_search_form {
+  float: right;
+  padding-top: 7px;
+}
+
+#global_search_form .form-control {
+  display: inline;
+  width: auto;
+}
+
+.footer {
+  position: relative;
+  bottom: 0;
+  width: 100%;
+  height: 61px;
+  margin-top: 10px;
+  background-color: #f8f8f8;
+  border-top: 1px solid #e7e7e7;
+}
+
+.footer>p {
+  position: absolute;
+  top: 20px;
+  right: 1%;
+}
+
+.label.label-warning,
+.label.label-info {
+  border-radius: 50%;
+}
+
+.label.label-info:hover,
+#descriptionLabel:hover+.label.label-info {
+  opacity: 1;
+}
+
+.label.label-info {
+  opacity: 0;
+  -webkit-transition: opacity .5s;
+     -moz-transition: opacity .5s;
+       -o-transition: opacity .5s;
+          transition: opacity .5s;
+}
+
+.form-control.has-warning {
+  display: inline-block;
+  width: calc(100% - 30px);
+}
+
+.label-warning+.popover .popover-title,
+.label-warning+.popover .popover-content {
+  background: linear-gradient( to right, white, #f0ad4e );
+}
+
+.label-info+.popover .popover-title,
+.label-info+.popover .popover-content {
+  background: linear-gradient( to right, white, #5bc0de );
+}
+
+.link-logout {
+  margin-top: 5px;
+  text-align: center;
+  display: block;
+}
