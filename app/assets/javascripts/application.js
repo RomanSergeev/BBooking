@@ -14,4 +14,7 @@
 //= require jquery_ujs
 //= require bootstrap-sprockets
 //= require global
+//= require scrollreveal
+//= require jquery.magnific-popup
+//= require creative
 //= require_tree .

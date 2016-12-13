@@ -34,6 +34,8 @@ class ServicesController < ApplicationController
     @service = Service.new(service_params)
     @service.user_id = current_user.id
     @service.servicedata = params[:service][:servicedata]
+    @service.textsearchable_index_col = @service.servicedata['name'] +
+      ' ' + @service.servicedata['description']
 
     respond_to do |format|
       if @service.save
@@ -59,6 +61,8 @@ class ServicesController < ApplicationController
     set_service
     require_permission
     @service.servicedata = params[:service][:servicedata]
+    @service.textsearchable_index_col = @service.servicedata['name'] +
+      ' ' + @service.servicedata['description']
     respond_to do |format|
       if @service.update(service_params)
         format.html { redirect_to @service, notice: 'Service was successfully updated.' }
