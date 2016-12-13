@@ -11,11 +11,13 @@ module CalendarsService
     @user = User.preload(:profile, :calendar).find(params[:user_id])
   end
 
-  def require_permission
+  def require_permission?
     unless @user.id == current_user.id
       redirect_to user_path(@user),
                   notice: 'Editing or deleting of other\'s calendar is forbidden.'
+      return false
     end
+    true
   end
 
   # Use callbacks to share common setup or constraints between actions.
@@ -38,6 +40,7 @@ module CalendarsService
   end
 
   def get_free_interval_sets(user, user_is_provider, user_orders, orders_at_user)
+    return nil unless user.calendar.preferences['serving_start']
     ultimate_set = IntervalSet.new([0..MINUTES_IN_DAY - 1])
     if user_is_provider
       prefs = user.calendar.preferences

@@ -5,7 +5,6 @@ class CalendarsController < ApplicationController
 
   def show
     find_user
-    puts 'entering calendars/show'
     require_profile?(@user) or return
     init_presenter
     set_calendar
@@ -14,16 +13,16 @@ class CalendarsController < ApplicationController
 
   def edit
     find_user
-    require_permission
-    require_profile?(@user) or return
+    require_permission? or return
+    require_profile? or return
     init_presenter
     render 'edit', locals: { view_data: @calendars_presenter.edit_data(@user.calendar) }
   end
 
   def update
     find_user
-    require_permission
-    require_profile?(@user) or return
+    require_permission? or return
+    require_profile? or return
     json = params[:calendar][:preferences]
     if check_for_correct_calendar_data?(json)
       json['serving_start'] = json['serving_start'].to_i - 1

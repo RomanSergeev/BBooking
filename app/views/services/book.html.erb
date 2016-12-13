@@ -1,26 +1,20 @@
 <h2>My calendar:</h2>
 <div class="calendars-holder">
   <%= render 'calendars/calendar_timeline',
-             view_data: @calendars_presenter.calendar_timeline_data(@my_calendar_data[:user].calendar.preferences, current_user.id),
-             settings: @my_calendar_data %>
-<h2><%= @provider.profile.personaldata['name'] %>'s calendar:</h2>
+             view_data: @calendars_presenter.calendar_timeline_data(view_data[:my_preferences], view_data[:me]),
+             settings: view_data[:my_calendar_data] %>
+<h2><%= view_data[:provider_name] %>'s calendar:</h2>
   <%= render 'calendars/calendar_timeline',
-             view_data: @calendars_presenter.calendar_timeline_data(@provider_calendar_data[:user].calendar.preferences, @provider.id),
-             settings: @provider_calendar_data %>
-  <% unless @free_intervals.empty? %>
-    <%= render 'calendars/calendar_runner', duration: @service.servicedata['duration'], free: @free_intervals %>
+             view_data: @calendars_presenter.calendar_timeline_data(view_data[:provider_preferences], view_data[:provider]),
+             settings: view_data[:provider_calendar_data] %>
+  <% if view_data[:booking_is_available] %>
+    <%= render 'calendars/calendar_runner', duration: @service.servicedata['duration'], free: view_data[:free_intervals] %>
   <% end %>
 </div>
-<% unless @free_intervals.empty? %>
-  <script>
-    var free_intervals = [];
-    <% @free_intervals.intervals.each_with_index do |interval, i| %>
-      free_intervals[<%= i %>] = [<%= interval.begin %>, <%= interval.end %>];
-    <% end %>
-    set_global_var(free_intervals);
-  </script>
-  <%= render 'calendars/booking_form', at_time: @free_intervals.start %>
+<% if view_data[:booking_is_available] %>
+  <%= view_data[:script_string].html_safe %>
+  <%= render 'calendars/booking_form', at_time: view_data[:free_intervals].start %>
 <% end %>
 <%= render 'calendars/calendar_legend' %>
 <br/>
-<%= link_to 'Back', :back %>
+<%= link_to 'Back to service', service_path(@service) %>

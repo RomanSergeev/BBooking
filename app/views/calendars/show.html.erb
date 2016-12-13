@@ -9,11 +9,7 @@
     <%= render 'calendars/calendar_legend' %>
   </div>
   <div class="col-sm-2 col-sm-push-1 edit-buttons">
-    <% if view_data[:is_mine] %>
-      <%= link_to 'My homepage', user_path(current_user) %>
-      <%= link_to 'Manage my services', edit_services_path(view_data[:id]) %>
-      <%= link_to 'Calendar preferences', edit_user_calendar_path %>
-    <% else %>
+    <% unless view_data[:is_mine] %>
       <%= link_to 'Back', :back %>
     <% end %>
   </div>

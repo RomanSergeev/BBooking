@@ -2,6 +2,32 @@ html, body {
   height: 100%;
 }
 
+.my-menu-button {
+  border-radius: 50%;
+  color: #777;
+  font-size: 25px;
+}
+
+.my-menu-button:active,
+.my-menu-button:focus {
+  outline: none !important;
+}
+
+.my-menu-holder {
+  position: relative;
+  display: inline;
+}
+
+.my-menu-holder .dropdown-menu {
+  top: 35px;
+  margin: 0;
+  padding: 0;
+}
+
+.my-menu-holder .dropdown-menu a {
+  background-color: transparent;
+}
+
 .register-form input[type=text],
 .register-form input[type=email],
 .register-form input[type=password] {

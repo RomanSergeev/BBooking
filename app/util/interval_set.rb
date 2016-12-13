@@ -3,6 +3,10 @@ class IntervalSet
   attr_reader :intervals
 
   def initialize(intervals)
+    if intervals.nil?
+      @intervals = nil
+      return
+    end
     unless intervals.is_a? Array
       raise ArgumentError, 'IntervalSet should be initialized with an array of ranges'
     end
@@ -33,6 +37,7 @@ class IntervalSet
   # @param [Integer] duration
   # @return [IntervalSet]
   def self.availability_intervals(set1, set2, duration)
+    return IntervalSet.new([]) if set1.nil? or set2.nil?
     intersect_sets(set1, set2).cut_from_right!(duration - 1)
   end
 
@@ -112,7 +117,7 @@ class IntervalSet
   end
 
   def empty?
-    @intervals == nil or @intervals.length == 0
+    @intervals.nil? or @intervals.length == 0
   end
 
   def to_s
@@ -156,6 +161,7 @@ class IntervalSet
       return -1 if i == @intervals.length - 1
       return i if interval.end >= @intervals[i+1].begin
     end
+    return -1
   end
 
 end

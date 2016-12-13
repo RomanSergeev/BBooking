@@ -9,6 +9,7 @@
 var TIMELINE_PERCENT = 14.4;
 
 $(document).ready(function() {
+  $('.dropdown-toggle').dropdown();
   $('[data-toggle="popover"]').popover();
 
   var two_side_updater = [

@@ -90,14 +90,22 @@ class ServicesController < ApplicationController
     require_profile? or return
     set_service
     prevent_own_booking
+    init_presenter
     init_calendars_presenter
-    @my_calendar_data = get_data_for_timeline(current_user)
-    @provider_calendar_data = get_data_for_timeline(@provider, true)
-    @free_intervals = IntervalSet::availability_intervals(
-      @my_calendar_data[:free_time_intervals],
-      @provider_calendar_data[:free_time_intervals],
+    my_calendar_data = get_data_for_timeline(current_user)
+    provider_calendar_data = get_data_for_timeline(@provider, true)
+    free_intervals = IntervalSet::availability_intervals(
+      my_calendar_data[:free_time_intervals],
+      provider_calendar_data[:free_time_intervals],
       @service.servicedata['duration'].to_i
     )
+    render 'book', locals: { view_data: @services_presenter.book_data(
+      current_user,
+      my_calendar_data,
+      @provider,
+      provider_calendar_data,
+      free_intervals
+    ) }
   end
 
   def book_payment

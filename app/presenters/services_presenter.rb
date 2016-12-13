@@ -23,6 +23,45 @@ class ServicesPresenter
     }
   end
 
+  # @param [User] me
+  # @param [jsonb] my_calendar_data
+  # @param [User] provider
+  # @param [jsonb] his_calendar_data
+  # @param [IntervalSet] free_intervals
+  def book_data(me,
+                my_calendar_data,
+                provider,
+                his_calendar_data,
+                free_intervals
+  )
+    script_string = ''
+    unless free_intervals.empty?
+      script_string = '<script>var free_intervals = [];'
+      free_intervals.intervals.each_with_index do |interval, i|
+        script_string += 'free_intervals[' +
+          i.to_s +
+          '] = [' +
+          interval.begin.to_s +
+          ', ' +
+          interval.end.to_s +
+          '];'
+      end
+      script_string += 'set_global_var(free_intervals);</script>'
+    end
+    {
+      me: me.id,
+      my_calendar_data: my_calendar_data,
+      my_preferences: my_calendar_data[:user].calendar.preferences,
+      provider: provider.id,
+      provider_name: provider.profile.personaldata['name'],
+      provider_calendar_data: his_calendar_data,
+      provider_preferences: his_calendar_data[:user].calendar.preferences,
+      booking_is_available: !free_intervals.empty?,
+      free_intervals: free_intervals,
+      script_string: script_string
+    }
+  end
+
   # @param [Date] day
   # @param [Integer] hours
   # @param [Integer] minutes
