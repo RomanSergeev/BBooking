@@ -3,4 +3,4 @@
 <%= render 'form', service: @service, view_data: @services_presenter.form_data(@service.servicedata) %>
 
 <br/>
-<%= link_to 'Back', :back %>
+<%= link_to 'Back to profile', user_path(current_user) %>
