@@ -112,8 +112,11 @@ $(document).ready(function() {
       }
     }(i));
   }
-
-  var free_intervals = parse_ruby_interval_set($('#calendar-runner')[0].getAttribute("data-attributes"));
+  var calendar_runner = $('#calendar-runner')[0];
+  var free_intervals;
+  if (calendar_runner) {
+    free_intervals = parse_ruby_interval_set(calendar_runner.getAttribute("data-attributes"));
+  }
 });
 
 function total_minutes(hours, minutes) {
