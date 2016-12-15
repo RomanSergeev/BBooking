@@ -12,18 +12,18 @@ module ApplicationService
     query = 'to_tsquery(\'' + param + '\')'
     {
       records: Service.find_by_sql(
-      'SELECT * FROM (' +
-        'SELECT ' +
-        'services.id AS id, ' +
-        'services.user_id, ' +
-        'services.servicedata, ' +
-        'ts_headline(textsearchable_index_col, ' + query + ') AS tooltip, ' +
-        'profiles.personaldata AS userdata, ' +
-        'ts_rank_cd(to_tsvector(textsearchable_index_col), ' + query + ') AS rank ' +
-        'FROM services JOIN profiles ON services.user_id = profiles.user_id ' +
+        'SELECT * FROM (' +
+          'SELECT ' +
+          'services.id AS id, ' +
+          'services.user_id, ' +
+          'services.servicedata, ' +
+          'ts_headline(textsearchable_index_col, ' + query + ') AS tooltip, ' +
+          'profiles.personaldata AS userdata, ' +
+          'ts_rank_cd(to_tsvector(textsearchable_index_col), ' + query + ') AS rank ' +
+          'FROM services JOIN profiles ON services.user_id = profiles.user_id ' +
         ') t ' +
         'WHERE t.rank > 0 ' +
-        'ORDER BY t.rank desc;'
+        'ORDER BY t.rank DESC;'
       )
     }
   end

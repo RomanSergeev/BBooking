@@ -8,16 +8,19 @@ class CalendarsPresenter
     CalendarsService::MINUTES_IN_DAY - 1
   end
 
+  # @param [User] user whose calendar we are looking at
   def show_data(user)
     is_mine = user.id == @current_user_id
+    title_text = is_mine ? 'My current calendar:' : user.profile.personaldata['name'] + '\'s calendar:'
     {
       is_mine: is_mine,
-      calendar_title_text: is_mine ? 'My current calendar:' : user.profile.personaldata['name'] + '\'s calendar:',
+      calendar_title_text: title_text,
       timeline_data: user.calendar.preferences,
       id: user.id
     }
   end
 
+  # @param [Calendar] calendar to be edited
   def edit_data(calendar)
     prefs = calendar.preferences
     serving_start = prefs['serving_start'].to_i || 1
@@ -53,7 +56,7 @@ class CalendarsPresenter
   end
 
   # @param [Hash] order from queries from CalendarsService
-  # @param [Integer] id whose calendar we are looking at
+  # @param [Integer] id of user whose calendar we are looking at
   def calendar_item_data(order, id)
     order.symbolize_keys!
     my_order = order[:customer_id] == @current_user_id
@@ -68,6 +71,7 @@ class CalendarsPresenter
     description = "Service #{service_info['name']} " +
       "starts at #{time.strftime('%H:%M')} " +
       "and lasts #{duration} minutes."
+    should_have_rest = order[:provider_id] == id && order[:rest_time] > 0
     {
       class_name: class_name,
       duration: duration,
@@ -76,7 +80,7 @@ class CalendarsPresenter
       title: title,
       rest_time: order[:rest_time],
       rest_offset: duration + minutes,
-      should_render_rest: order[:provider_id] == id && order[:rest_time] > 0
+      should_render_rest: should_have_rest
     }
   end
 

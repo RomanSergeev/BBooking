@@ -1,6 +1,6 @@
 class ServicesPresenter
 
-  # @param [jsonb] service_data
+  # @param [jsonb] service_data as a field of Service
   def form_data(service_data)
     {
       name: service_data['name'],
@@ -10,7 +10,7 @@ class ServicesPresenter
     }
   end
 
-  # @param [jsonb] service_data
+  # @param [jsonb] service_data as a field of Service
   def show_data(service_data)
     description = service_data['description']
     if not description.present? or description.empty?

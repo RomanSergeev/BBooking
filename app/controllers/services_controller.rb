@@ -30,13 +30,10 @@ class ServicesController < ApplicationController
   # POST /services
   # POST /services.json
   def create
-
     @service = Service.new(service_params)
     @service.user_id = current_user.id
     @service.servicedata = params[:service][:servicedata]
-    @service.textsearchable_index_col = @service.servicedata['name'] +
-      ' ' + @service.servicedata['description']
-
+    update_text_search_column(@service)
     respond_to do |format|
       if @service.save
         format.html { redirect_to show_services_path(current_user.id),
@@ -61,8 +58,7 @@ class ServicesController < ApplicationController
     set_service
     require_permission
     @service.servicedata = params[:service][:servicedata]
-    @service.textsearchable_index_col = @service.servicedata['name'] +
-      ' ' + @service.servicedata['description']
+    update_text_search_column(@service)
     respond_to do |format|
       if @service.update(service_params)
         format.html { redirect_to @service, notice: 'Service was successfully updated.' }
@@ -117,14 +113,13 @@ class ServicesController < ApplicationController
     init_presenter
     day, hours, minutes = Date.today, params[:bookAtHours], params[:bookAtMinutes]
     # TODO replace Date.today with date from request (date picker)
-    if booking_is_unavailable?(current_user, @service, format_booking_date(day, hours, minutes))
-      puts 'Booking is unavailable!'
-      redirect_to service_path(@service),
-                  notice: 'Something went wrong and booking is unavailable.'
-    else
+    if booking_is_available?(current_user, @service, format_booking_date(day, hours, minutes))
       render 'book_payment', locals: {
         view_data: @services_presenter.book_payment_data(day, hours, minutes)
       }
+    else
+      redirect_to service_path(@service),
+                  notice: 'Something went wrong and booking is unavailable.'
     end
   end
 
@@ -149,7 +144,7 @@ class ServicesController < ApplicationController
 
   def booking_performed?(user, service, order_time)
     # second check is needed because service may already be booked between user clicks
-    unless booking_is_unavailable?(user, service, order_time)
+    if booking_is_available?(user, service, order_time)
       Order.create!(
         customer_id: user.id,
         service_id: service.id,

@@ -1,7 +1,15 @@
+=begin
+class IntervalSet representing set (Array) of intervals (Ranges).
+instance variable @intervals always contains array of ranges including end (a..b),
+sorted by their begin and not intersecting with each other.
+=end
+
 class IntervalSet
 
   attr_reader :intervals
 
+  # @param [Array<Range>] intervals array of any ranges -
+  # they may exclude end, may intersect, may be unordered, but should have integer bounds
   def initialize(intervals)
     if intervals.nil?
       @intervals = nil
@@ -11,12 +19,12 @@ class IntervalSet
       raise ArgumentError, 'IntervalSet should be initialized with an array of ranges'
     end
     @intervals = intervals
-    simplify
-    @intervals.sort! { |x,y| x.begin <=> y.begin }
-    make_correct
+    remove_bad_intervals
+    merge_collided_intervals
   end
 
-  # set1 ^ set2 == X \ ((X\set1) v (X\set2))
+  # set1 ^ set2 == X \ ((X\set1) v (X\set2)) where X includes (set1 v set2),
+  # ^ == intersection, v == union, \ == difference (exclusion)
   # @param [IntervalSet] set1
   # @param [IntervalSet] set2
   # @return [IntervalSet] intersection
@@ -32,6 +40,8 @@ class IntervalSet
     ultimate_set
   end
 
+  # @see app/controllers/services_controller book method
+  # method used to construct free_intervals
   # @param [IntervalSet] set1
   # @param [IntervalSet] set2
   # @param [Integer] duration
@@ -51,6 +61,26 @@ class IntervalSet
     @intervals[@intervals.length - 1].end
   end
 
+  # excludes _interval from @intervals. Algorithm is as following:
+  # @intervals:   [......]      [...]      [.....]
+  # _interval:             [..]
+  # result:       [......]      [...]      [.....]
+  #==============================================
+  # @intervals:   [......]      [...]      [.....]
+  # _interval:         [....]
+  # result:       [...]         [...]      [.....]
+  #==============================================
+  # @intervals:   [......]      [...]      [.....]
+  # _interval:  [.....................]
+  # result:                                [.....]
+  #==============================================
+  # @intervals:   [......]      [...]      [.....]
+  # _interval:         [.........]
+  # result:       [...]           [.]      [.....]
+  #==============================================
+  # @intervals:   [......]      [...]      [.....]
+  # _interval:  [..................................]
+  # result:     (empty Array)
   # @param [Range] _interval
   # @return nil
   def exclude!(_interval)
@@ -83,9 +113,11 @@ class IntervalSet
       end
     end
     @intervals.compact!
-    simplify
+    remove_bad_intervals
   end
 
+  # excludes all set.intervals from @intervals (result is like a set difference)
+  # @see exclude!
   # @param [IntervalSet] set
   # @return nil
   def exclude_all!(set)
@@ -94,8 +126,8 @@ class IntervalSet
     end
   end
 
-  # @param [Integer] amount
-  # @return [IntervalSet]
+  # @param [Integer] amount how much all the ranges from @intervals should be shrank from right
+  # @return [IntervalSet] new set without bad/empty ranges
   def cut_from_right(amount)
     intervals = @intervals.clone
     intervals.each_with_index do |interval, i|
@@ -127,13 +159,14 @@ class IntervalSet
   private
 
   # @param [Range] interval of any type
-  # @return [Range] interval of type a..b
+  # @return [Range] range of type a..b
   def make_included_interval(interval)
     return interval unless interval.exclude_end?
     interval.begin..(interval.end - 1)
   end
 
-  def simplify
+  # make all ranges in @intervals end-including and remove empty & incorrect ranges
+  def remove_bad_intervals
     @intervals.each_with_index do |interval, index|
       included_interval = make_included_interval(interval)
       if included_interval.begin > included_interval.end
@@ -145,9 +178,11 @@ class IntervalSet
     @intervals.compact!
   end
 
-  # not optimal
-  def make_correct
-    while (incorrect_index = correct) != -1
+  # reorganize initial @intervals to match condition (see top of the file)
+  def merge_collided_intervals
+    @intervals.sort! { |x,y| x.begin <=> y.begin }
+    while (incorrect_index = first_incorrect_index) != -1
+      # no need to check min_begin because intervals are already sorted by begin
       max_end = [@intervals[incorrect_index].end, @intervals[incorrect_index + 1].end].max
       @intervals[incorrect_index] =
         @intervals[incorrect_index].begin..max_end
@@ -155,13 +190,13 @@ class IntervalSet
     end
   end
 
-  # @return [Integer] index of first misplaced interval
-  def correct
+  # @return [Integer] index of first misplaced interval or -1 if everything is correct
+  def first_incorrect_index
     @intervals.each_with_index do |interval, i|
       return -1 if i == @intervals.length - 1
       return i if interval.end >= @intervals[i+1].begin
     end
-    return -1
+    -1
   end
 
 end

@@ -4,7 +4,7 @@
     <br/>
     <br/>
     <%= render 'calendars/calendar_timeline',
-               view_data: @calendars_presenter.calendar_timeline_data(view_data[:timeline_data], @user.id),
+               view_data: @calendars_presenter.calendar_timeline_data(view_data[:timeline_data], view_data[:id]),
                settings: @settings %>
     <%= render 'calendars/calendar_legend' %>
   </div>

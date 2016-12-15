@@ -4,6 +4,8 @@ class UsersController < ApplicationController
 
   def show
     find_user
+    init_presenter
+    render 'show', locals: { view_data: @users_presenter.show_data(@user.profile) }
   end
 
   def edit_services

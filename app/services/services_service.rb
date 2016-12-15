@@ -6,6 +6,11 @@ module ServicesService
     @provider = User.preload(:profile).find(@service.user_id)
   end
 
+  def update_text_search_column(service)
+    service.textsearchable_index_col = service.servicedata['name'] +
+      ' ' + service.servicedata['description']
+  end
+
   def init_presenter
     @services_presenter = ServicesPresenter.new
   end
@@ -32,8 +37,8 @@ module ServicesService
   # @param [User] user
   # @param [Service] service
   # @param [DateTime] order_time
-  def booking_is_unavailable?(user, service, order_time)
-    order_time <= Time.new + 6.hours or user.id == service.user_id
+  def booking_is_available?(user, service, order_time)
+    order_time > Time.new + 6.hours and user.id != service.user_id
   end
 
   # @param [Date] day

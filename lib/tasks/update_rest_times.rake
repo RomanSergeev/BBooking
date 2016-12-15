@@ -1,6 +1,6 @@
 namespace :order do
   task update_rest_times: :environment do
-    Order.all.each do |order|
+    Order.find_each(batch_size: 1000) do |order|
       # Bad practice of many queries but task is passed only once
       service = Service.find(order.service_id)
       user = User.find(service.user_id)

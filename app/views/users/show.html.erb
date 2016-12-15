@@ -1,4 +1,3 @@
-<% profile_json = @user.profile.present? ? @user.profile.personaldata : {} %>
 <% if @user.errors.any? %>
   <div id="error_explanation" class="notshown">
     <ul>
@@ -20,13 +19,13 @@
         Name
       </b></div>
       <div class="col-sm-3">
-        <%= profile_json['name'] %>
+        <%= view_data[:json]['name'] %>
       </div>
       <div class="col-sm-2 col-sm-push-1"><b>
         Country
       </b></div>
       <div class="col-sm-3 col-sm-push-1">
-        <%= profile_json['country'] %>
+        <%= view_data[:json]['country'] %>
       </div>
     </div>
 
@@ -41,7 +40,7 @@
         City
       </b></div>
       <div class="col-sm-3 col-sm-push-1">
-        <%= profile_json['city'] %>
+        <%= view_data[:json]['city'] %>
       </div>
     </div>
 
@@ -50,13 +49,13 @@
         Phone
       </b></div>
       <div class="col-sm-3">
-        <%= profile_json['phone'] %>
+        <%= view_data[:json]['phone'] %>
       </div>
       <div class="col-sm-2 col-sm-push-1"><b>
         Address
       </b></div>
       <div class="col-sm-3 col-sm-push-1">
-        <%= profile_json['address'] %>
+        <%= view_data[:json]['address'] %>
       </div>
     </div>
   </div>

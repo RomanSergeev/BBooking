@@ -24,16 +24,14 @@ class CalendarsController < ApplicationController
     require_permission? or return
     require_profile? or return
     json = params[:calendar][:preferences]
-    if check_for_correct_calendar_data?(json)
-      json['serving_start'] = json['serving_start'].to_i - 1
-      json['break_finish'] = json['break_finish'].to_i - 1
-      @user.calendar.preferences = json
-      if @user.calendar.update(calendar_params)
-        redirect_to user_calendar_path
-      else
-        init_presenter
-        render 'edit', locals: { view_data: @calendars_presenter.edit_data(@user.calendar) }
-      end
+    check_for_correct_calendar_data?(json) or return
+    update_preferences_border_values(json)
+    @user.calendar.preferences = json
+    if @user.calendar.update(calendar_params)
+      redirect_to user_calendar_path
+    else
+      init_presenter
+      render 'edit', locals: { view_data: @calendars_presenter.edit_data(@user.calendar) }
     end
   end
 

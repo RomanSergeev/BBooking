@@ -1,7 +1,10 @@
 module CalendarsHelper
 
+  # TIMELINE_PERCENT == 1% of day in minutes (useful for rendering calendars)
+  TIMELINE_PERCENT = CalendarsService::MINUTES_IN_DAY / 100.0
+
   def width(minute_block)
-    minute_block.to_i / CalendarsService::TIMELINE_PERCENT
+    minute_block.to_i / TIMELINE_PERCENT
   end
 
   def format_width(value)

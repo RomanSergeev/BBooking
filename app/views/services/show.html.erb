@@ -5,15 +5,14 @@
     <h2>Service <b><%= view_data[:name] %></b></h2>
     <br/>
 
-    <b>Provided by </b> <%= @provider.profile.personaldata['name'] %>
-    <br/><br/>
-
+    <b>Provided by </b><%= @provider.profile.personaldata['name'] %>
+    <br/>
+    <br/>
     <b>Average duration </b> <%= view_data[:duration] %> minutes
-    <br/><br/>
-
+    <br/>
+    <br/>
     <b>Description</b>
     <br/>
-
     <%= view_data[:description] %>
   </div>
 

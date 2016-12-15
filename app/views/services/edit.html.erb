@@ -1,6 +1,8 @@
 <h1>Editing Service</h1>
 
-<%= render 'form', service: @service, view_data: @services_presenter.form_data(@service.servicedata) %>
+<%= render 'form',
+           service: @service,
+           view_data: @services_presenter.form_data(@service.servicedata) %>
 <br/>
 
 <% if service_url(@service) != _back_url %>
