@@ -1,3 +1,5 @@
+// from http://www.w3schools.com/bootstrap/bootstrap_theme_company.asp
+
 $(document).ready(function(){
   // Add smooth scrolling to all links in navbar + footer link
   $(".navbar a, footer a[href='#myPage']").on('click', function(event) {

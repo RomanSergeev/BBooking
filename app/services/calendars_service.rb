@@ -1,6 +1,7 @@
 module CalendarsService
 
   MINUTES_IN_DAY = 1440
+  # TIMELINE_PERCENT == 1% of day in minutes (useful for rendering calendars)
   TIMELINE_PERCENT = 1440 / 100.0
 
   def init_presenter

@@ -40,11 +40,7 @@ $(document).ready(function() {
   var interval_update_function = function(elems) {
     return function() {
       var new_temp_value = int(elems[0].value) * 60 + int(elems[1].value);
-      var from_right = false;
-      if (old_value && old_value < new_temp_value) {
-        from_right = true;
-      }
-      var new_value = get_closest_available_interval_value(free_intervals, new_temp_value, from_right);
+      var new_value = get_closest_available_interval_value(free_intervals, new_temp_value, old_value);
       if (new_value !== undefined) {
         old_value = new_temp_value;
         elems[0].value = Math.floor(new_value / 60);
@@ -112,10 +108,10 @@ $(document).ready(function() {
       }
     }(i));
   }
-  var calendar_runner = $('#calendar-runner')[0];
+  var calendar_runner = by_id('calendar-runner');
   var free_intervals;
   if (calendar_runner) {
-    free_intervals = parse_ruby_interval_set(calendar_runner.getAttribute("data-attributes"));
+    free_intervals = parse_ruby_interval_set_string(calendar_runner.getAttribute("data-attributes"));
   }
 });
 
@@ -148,6 +144,10 @@ function by_id(id) {
   return $('#' + id)[0];
 }
 
+/**
+ * @param {Array.<Node>} elems: elements having 'value' attribute to be updated
+ * @param {Array.<Function>} functions: functions[i] == some action on elems[i] value changing
+ */
 function bind_updater(elems, functions) {
   if (!elems[0]) return;
   var current_values = {}, i;
@@ -160,12 +160,13 @@ function bind_updater(elems, functions) {
 }
 
 /**
- * @see app/utils/IntervalSet
- * @param {String} interval_set like [a..b, c..d, e..f]
+ * @see app/utils/interval_set
+ * @param {String} interval_set_string like '[a..b, c..d, e..f]' where a,b,c,.. are integers
+ * @returns {Array.<Array.<Integer>>} like [[a,b], [c,d], [e,f]]
  */
-function parse_ruby_interval_set(interval_set) {
-  console.log(interval_set);
-  var result = interval_set.substring(1, interval_set.length - 1).split(", ");
+function parse_ruby_interval_set_string(interval_set_string) {
+  console.log(interval_set_string);
+  var result = interval_set_string.substring(1, interval_set_string.length - 1).split(", ");
   for (var i = 0; i < result.length; i++) {
     result[i] = result[i].split("..");
     for (var j = 0; j < result[i].length; j++) {
@@ -176,10 +177,10 @@ function parse_ruby_interval_set(interval_set) {
 }
 
 /**
- * @see app/utils/IntervalSet
- * @param {Array} interval_set Array of two-element arrays representing Ruby Range for IntervalSet intervals
- * @param {number} value
- * @returns {number}
+ * @see app/utils/interval_set
+ * @param {Array} interval_set: array of two-element arrays representing intervals field of IntervalSet
+ * @param {number} value: a value to find in this interval_set
+ * @returns {number} index in interval_set in which value is contained, or -1
  */
 function in_interval_set_index(interval_set, value) {
   for (var i = 0; i < interval_set.length; i++) {
@@ -190,7 +191,22 @@ function in_interval_set_index(interval_set, value) {
   return -1;
 }
 
-function get_closest_available_interval_value(interval_set, value, from_right) {
+/**
+ * @see app/utils/interval_set
+ * @see parse_ruby_interval_set_string for interval_set construction
+ * @param {Array.<Array.<Integer>>} interval_set
+ * @param {Integer} value: some integer value (not necessary included in interval)
+ * @param {Integer} old_value: previous value
+ * @returns {Integer}
+ * when value is in interval_set, returns value;
+ * when not, looking through looped interval_set in direction old_value -> value,
+ * returns first suitable integer from interval_set;
+ */
+function get_closest_available_interval_value(interval_set, value, old_value) {
+  var from_right = false;
+  if (old_value && old_value < new_temp_value) {
+    from_right = true;
+  }
   var index = in_interval_set_index(interval_set, value);
   if (index != -1) {
     return value;
