@@ -34,20 +34,6 @@ class ServicesPresenter
                 his_calendar_data,
                 free_intervals
   )
-    script_string = ''
-    unless free_intervals.empty?
-      script_string = '<script>var free_intervals = [];'
-      free_intervals.intervals.each_with_index do |interval, i|
-        script_string += 'free_intervals[' +
-          i.to_s +
-          '] = [' +
-          interval.begin.to_s +
-          ', ' +
-          interval.end.to_s +
-          '];'
-      end
-      script_string += 'set_global_var(free_intervals);</script>'
-    end
     {
       me: me.id,
       my_calendar_data: my_calendar_data,
@@ -57,8 +43,7 @@ class ServicesPresenter
       provider_calendar_data: his_calendar_data,
       provider_preferences: his_calendar_data[:user].calendar.preferences,
       booking_is_available: !free_intervals.empty?,
-      free_intervals: free_intervals,
-      script_string: script_string
+      free_intervals: free_intervals
     }
   end
 

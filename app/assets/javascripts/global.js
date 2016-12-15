@@ -99,7 +99,7 @@ $(document).ready(function() {
   }
   // FIXME changing 'doubler' values doesn't affect other inputs
   for (i = 0; i < headInputs.length; i++) {
-    if (!headInputs[i]) return;
+    if (!headInputs[i]) break;
     headInputs[i].addEventListener('input', function (j) {
       return function() {
         for (var k = 0; k < headInputs.length; k++) {
@@ -112,6 +112,8 @@ $(document).ready(function() {
       }
     }(i));
   }
+
+  var free_intervals = parse_ruby_interval_set($('#calendar-runner')[0].getAttribute("data-attributes"));
 });
 
 function total_minutes(hours, minutes) {
@@ -154,8 +156,20 @@ function bind_updater(elems, functions) {
   }
 }
 
-function set_global_var(variable) {
-  window[variable] = variable;
+/**
+ * @see app/utils/IntervalSet
+ * @param {String} interval_set like [a..b, c..d, e..f]
+ */
+function parse_ruby_interval_set(interval_set) {
+  console.log(interval_set);
+  var result = interval_set.substring(1, interval_set.length - 1).split(", ");
+  for (var i = 0; i < result.length; i++) {
+    result[i] = result[i].split("..");
+    for (var j = 0; j < result[i].length; j++) {
+      result[i][j] = int(result[i][j]);
+    }
+  }
+  return result;
 }
 
 /**

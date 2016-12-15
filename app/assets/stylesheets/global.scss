@@ -22,10 +22,20 @@ html, body {
   top: 35px;
   margin: 0;
   padding: 0;
+  border-radius: 7px;
 }
 
 .my-menu-holder .dropdown-menu a {
   background-color: transparent;
+  border-color: #adadad;
+}
+
+.my-menu-holder .dropdown-menu a:hover {
+  background-color: #e6e6e6;
+}
+
+.my-menu-holder .dropdown-menu a:active {
+  background-color: #adadad;
 }
 
 .register-form input[type=text],

@@ -99,13 +99,15 @@ class ServicesController < ApplicationController
       provider_calendar_data[:free_time_intervals],
       @service.servicedata['duration'].to_i
     )
-    render 'book', locals: { view_data: @services_presenter.book_data(
+    render 'book', locals: {
+      view_data: @services_presenter.book_data(
       current_user,
       my_calendar_data,
       @provider,
       provider_calendar_data,
       free_intervals
-    ) }
+      )
+    }
   end
 
   def book_payment
