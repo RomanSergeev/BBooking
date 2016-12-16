@@ -1,7 +1,7 @@
-<% if @user.errors.any? %>
+<% if view_data[:user].errors.any? %>
   <div id="error_explanation" class="notshown">
     <ul>
-      <% @user.errors.full_messages.each do |message| %>
+      <% view_data[:user].errors.full_messages.each do |message| %>
         <li><%= message %></li>
       <% end %>
     </ul>
@@ -34,7 +34,7 @@
         Email
       </b></div>
       <div class="col-sm-3">
-        <%= @user.email %>
+        <%= view_data[:user].email %>
       </div>
       <div class="col-sm-2 col-sm-push-1"><b>
         City
@@ -61,17 +61,17 @@
   </div>
 
   <div class="col-sm-2 col-sm-push-1 edit-buttons">
-    <% if current_user.id == @user.id %>
-      <% if @user.profile.present? %>
-        <%= link_to 'Edit my profile', edit_profile_path(@user.profile) %>
+    <% if view_data[:user_is_owner] %>
+      <% if view_data[:profile_is_present] %>
+        <%= link_to 'Edit my profile', edit_profile_path(view_data[:profile]) %>
       <% else %>
         <%= link_to 'Create profile', new_profile_path %>
       <% end %>
     <% else %>
-      <% if @user.profile.present? %>
-        <%= link_to 'View services', show_services_path(@user) %>
-        <%= link_to @user.profile.personaldata['name'] + '\'s calendar',
-                    user_calendar_path(@user) %>
+      <% if view_data[:profile_is_present] %>
+        <%= link_to 'View services', show_services_path(view_data[:user]) %>
+        <%= link_to view_data[:profile].personaldata['name'] + '\'s calendar',
+                    user_calendar_path(view_data[:user]) %>
       <% end %>
     <% end %>
   </div>

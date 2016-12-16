@@ -1,22 +1,11 @@
-module UsersService
+class UsersService
 
-  def find_user
-    @user = User.preload(:profile, :calendar).find(params[:id] || params[:user_id])
+  def find_user(params)
+    User.preload(:profile, :calendar).find(params[:user_id] || params[:id])
   end
 
-  def init_presenter
-    @users_presenter = UsersPresenter.new
-  end
-
-  def require_profile?(user = current_user)
-    unless user.profile.present?
-      redirect_to user_path(user),
-                  notice: 'This action requires ' +
-                    (user.id == current_user.id ? 'your' : 'user\'s') +
-                    ' profile fulfilled.'
-      return false
-    end
-    true
+  def find_user_services(user)
+    Service.where(user_id: user.id)
   end
 
 end

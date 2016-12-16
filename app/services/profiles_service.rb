@@ -1,11 +1,17 @@
-module ProfilesService
+class ProfilesService
 
-  def require_permission
-    @profile = Profile.find(params[:id])
-    if @profile.user_id != current_user.id
-      redirect_to user_path(current_user),
-                  notice: 'Editing of other\'s profile is forbidden.'
-    end
+  def new_profile(current_user, params = nil)
+    Profile.new(
+      user_id: current_user.id,
+      personaldata:
+        params.nil? ?
+          {name: '', phone: ''} :
+          params[:profile]
+    )
+  end
+
+  def find_profile(id)
+    Profile.find(id)
   end
 
 end

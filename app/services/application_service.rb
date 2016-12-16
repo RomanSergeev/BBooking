@@ -1,4 +1,4 @@
-module ApplicationService
+class ApplicationService
 
   # TODO make some universal query preparator
   def search_results(_param)

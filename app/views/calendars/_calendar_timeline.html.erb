@@ -9,11 +9,11 @@
          style="<%= format_width_and_left(view_data[:break_length], view_data[:break_start]) %>">
     </div>
   <% end %>
-  <% settings[:my_orders].each do |order| %>
+  <% timeline_data[:my_orders].each do |order| %>
     <%= render 'calendars/calendar_item',
                view_data: @calendars_presenter.calendar_item_data(order, view_data[:id]) %>
   <% end %>
-  <% settings[:ordered_at_me].each do |order| %>
+  <% timeline_data[:ordered_at_me].each do |order| %>
     <%= render 'calendars/calendar_item',
                view_data: @calendars_presenter.calendar_item_data(order, view_data[:id]) %>
   <% end %>

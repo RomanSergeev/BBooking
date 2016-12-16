@@ -5,14 +5,14 @@
                  view_data[:my_preferences],
                  view_data[:me]
              ),
-             settings: view_data[:my_calendar_data] %>
+             timeline_data: view_data[:my_calendar_data] %>
 <h2><%= view_data[:provider_name] %>'s calendar:</h2>
   <%= render 'calendars/calendar_timeline',
              view_data: @calendars_presenter.calendar_timeline_data(
                  view_data[:provider_preferences],
                  view_data[:provider]
              ),
-             settings: view_data[:provider_calendar_data] %>
+             timeline_data: view_data[:provider_calendar_data] %>
   <% if view_data[:booking_is_available] %>
     <%= render 'calendars/calendar_runner',
                duration: @service.servicedata['duration'],

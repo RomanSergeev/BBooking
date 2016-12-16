@@ -204,7 +204,7 @@ function in_interval_set_index(interval_set, value) {
  */
 function get_closest_available_interval_value(interval_set, value, old_value) {
   var from_right = false;
-  if (old_value && old_value < new_temp_value) {
+  if (old_value && old_value < value) {
     from_right = true;
   }
   var index = in_interval_set_index(interval_set, value);

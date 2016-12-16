@@ -1,39 +1,38 @@
 class ServicesController < ApplicationController
-  include UsersService
-  include CalendarsService
-  include ServicesService
   layout 'user' # TODO change to services new own layout
 
   # GET /services/1
   # GET /services/1.json
   def show
-    set_service
+    set_services
+    set_service_and_provider
     init_presenter
     render 'show', locals: { view_data: @services_presenter.show_data(@service.servicedata) }
   end
 
   # GET /services/new
   def new
-    require_profile? or return
+    set_services
+    require_profile?(current_user) or return
+    @service = @services_service.new_service(current_user.id)
     init_presenter
-    @service = Service.new
-    @service.user_id = current_user.id
   end
 
   # GET /services/1/edit
   def edit
-    set_service
-    require_permission
+    set_services
+    set_service_and_provider
+    require_permission? or return
     init_presenter
   end
 
   # POST /services
   # POST /services.json
   def create
-    @service = Service.new(service_params)
-    @service.user_id = current_user.id
+    set_services
+    @service = @services_service.new_service(current_user.id, service_params)
     @service.servicedata = params[:service][:servicedata]
-    update_text_search_column(@service)
+    @services_service.update_text_search_column(@service)
     respond_to do |format|
       if @service.save
         format.html { redirect_to show_services_path(current_user.id),
@@ -55,10 +54,11 @@ class ServicesController < ApplicationController
   # PATCH/PUT /services/1
   # PATCH/PUT /services/1.json
   def update
-    set_service
-    require_permission
+    set_services
+    set_service_and_provider
+    require_permission? or return
     @service.servicedata = params[:service][:servicedata]
-    update_text_search_column(@service)
+    @services_service.update_text_search_column(@service)
     respond_to do |format|
       if @service.update(service_params)
         format.html { redirect_to @service, notice: 'Service was successfully updated.' }
@@ -73,8 +73,9 @@ class ServicesController < ApplicationController
   # DELETE /services/1
   # DELETE /services/1.json
   def destroy
-    set_service
-    require_permission
+    set_services
+    set_service_and_provider
+    require_permission? or return
     @service.destroy
     respond_to do |format|
       format.html { redirect_to edit_services_path(@provider), notice: 'Service was successfully destroyed.' }
@@ -83,37 +84,43 @@ class ServicesController < ApplicationController
   end
 
   def book
-    require_profile? or return
-    set_service
-    prevent_own_booking
+    set_services
+    require_profile?(current_user) or return
+    set_service_and_provider
+    prevent_own_booking? or return
+    my_calendar_data = @calendars_service.get_data_for_timeline(current_user, false)
+    provider_calendar_data = @calendars_service.get_data_for_timeline(@provider, true)
+    free_intervals = @calendars_service.get_free_intervals_for(
+      my_calendar_data,
+      provider_calendar_data,
+      @service
+    )
     init_presenter
     init_calendars_presenter
-    my_calendar_data = get_data_for_timeline(current_user)
-    provider_calendar_data = get_data_for_timeline(@provider, true)
-    free_intervals = IntervalSet::availability_intervals(
-      my_calendar_data[:free_time_intervals],
-      provider_calendar_data[:free_time_intervals],
-      @service.servicedata['duration'].to_i
-    )
     render 'book', locals: {
       view_data: @services_presenter.book_data(
-      current_user,
-      my_calendar_data,
-      @provider,
-      provider_calendar_data,
-      free_intervals
+        current_user,
+        my_calendar_data,
+        @provider,
+        provider_calendar_data,
+        free_intervals
       )
     }
   end
 
   def book_payment
-    require_profile? or return
-    set_service
-    prevent_own_booking
-    init_presenter
+    set_services
+    require_profile?(current_user) or return
+    set_service_and_provider
+    prevent_own_booking? or return
     day, hours, minutes = Date.today, params[:bookAtHours], params[:bookAtMinutes]
     # TODO replace Date.today with date from request (date picker)
-    if booking_is_available?(current_user, @service, format_booking_date(day, hours, minutes))
+    if @services_service.booking_is_available?(
+      current_user,
+      @service,
+      @services_service.format_booking_date(day, hours, minutes)
+    )
+      init_presenter
       render 'book_payment', locals: {
         view_data: @services_presenter.book_payment_data(day, hours, minutes)
       }
@@ -124,17 +131,24 @@ class ServicesController < ApplicationController
   end
 
   def booking_completed
-    require_profile? or return
-    set_service
-    prevent_own_booking
-    init_presenter
-    if booking_performed?(current_user,
-                          @service,
-                          format_booking_date(Date.parse(params[:day]), params[:hours], params[:minutes]))
+    set_services
+    require_profile?(current_user) or return
+    set_service_and_provider
+    prevent_own_booking? or return
+    if @services_service.booking_performed?(
+      current_user,
+      @service,
+      @services_service.format_booking_date(
+        Date.parse(params[:day]),
+        params[:hours],
+        params[:minutes]
+      )
+    )
       message = 'You\'ve successfully booked the service.'
     else
       message = 'Something went wrong and booking was cancelled.'
     end
+    init_presenter
     render 'booking_completed', locals: {
       view_data: @services_presenter.booking_completed_data(message)
     }
@@ -142,17 +156,39 @@ class ServicesController < ApplicationController
 
   private
 
-  def booking_performed?(user, service, order_time)
-    # second check is needed because service may already be booked between user clicks
-    if booking_is_available?(user, service, order_time)
-      Order.create!(
-        customer_id: user.id,
-        service_id: service.id,
-        start_time: order_time,
-        duration: service.servicedata['duration'])
-      return true
+  def require_permission?
+    if @provider.id != current_user.id
+      redirect_to user_path(current_user.id),
+                  notice: 'Editing or deleting of other\'s service is forbidden.'
+      return false
     end
-    false
+    true
+  end
+
+  def prevent_own_booking?
+    if @provider.id == current_user.id
+      redirect_to user_path(current_user.id),
+                  notice: 'You cannot book your own services!'
+      return false
+    end
+    true
+  end
+
+  def set_services
+    @calendars_service = CalendarsService.new
+    @services_service = ServicesService.new
+  end
+
+  def init_presenter
+    @services_presenter = ServicesPresenter.new
+  end
+
+  def init_calendars_presenter
+    @calendars_presenter = CalendarsPresenter.new(current_user.id)
+  end
+
+  def set_service_and_provider
+    @service, @provider = @services_service.set_service_and_provider(params[:id])
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.
