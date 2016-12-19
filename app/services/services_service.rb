@@ -17,9 +17,11 @@ class ServicesService
     [service, provider]
   end
 
-  def update_text_search_column(service)
-    service.textsearchable_index_col = service.servicedata['name'] +
-      ' ' + service.servicedata['description']
+  def update_text_search_column(provider, service)
+    service.textsearchable_index_col =
+      provider.profile.personaldata['name'] + ' ' +
+      service.servicedata['name'] + ' ' +
+      service.servicedata['description']
   end
 
   # TODO all checks seems to look different.

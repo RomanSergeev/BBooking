@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  mount Commontator::Engine => '/commontator'
   get 'users/:id/edit_services', to: 'users#edit_services', as: :edit_services
   get 'users/:id/show_services', to: 'users#show_services', as: :show_services
   get 'services/:id/book', to: 'services#book', as: :book_service

@@ -2,6 +2,7 @@ class Service < ApplicationRecord
   include ActiveModel::Validations
   validates_with ServiceValidator
   belongs_to :user
+  acts_as_commontable
 
   FIELDS = %w(
     name

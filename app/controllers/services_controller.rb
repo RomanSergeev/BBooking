@@ -32,7 +32,7 @@ class ServicesController < ApplicationController
     set_services
     @service = @services_service.new_service(current_user.id, service_params)
     @service.servicedata = params[:service][:servicedata]
-    @services_service.update_text_search_column(@service)
+    @services_service.update_text_search_column(current_user, @service)
     respond_to do |format|
       if @service.save
         format.html { redirect_to show_services_path(current_user.id),
@@ -58,7 +58,7 @@ class ServicesController < ApplicationController
     set_service_and_provider
     require_permission? or return
     @service.servicedata = params[:service][:servicedata]
-    @services_service.update_text_search_column(@service)
+    @services_service.update_text_search_column(@provider, @service)
     respond_to do |format|
       if @service.update(service_params)
         format.html { redirect_to @service, notice: 'Service was successfully updated.' }
