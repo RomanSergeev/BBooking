@@ -1,10 +1,12 @@
 .comment {
+  position: relative;
+
   font-size: 12px;
   font-weight: normal;
   font-style: normal;
 
-  border-top: 1px solid;
-  border-left: 1px solid;
+  border: 1px solid;
+  border-radius: 10px;
 
   margin-top: 15px;
   margin-bottom: 15px;
@@ -15,10 +17,25 @@
   padding-right: 10px;
 
   color: #000;
-  border-color: #DDD;
+  border-color: #CCC;
   background-color: #FFF;
 
   clear: both;
+}
+
+.comment:before {
+  content: "";
+  position: absolute;
+
+  width: 0;
+  height: 0;
+
+  left: 2%;
+  top: -5px;
+
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-bottom: 5px solid #CCC;
 }
 
 .comment_actions {

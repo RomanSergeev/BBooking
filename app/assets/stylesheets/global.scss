@@ -44,6 +44,7 @@ html, body {
   @extend .form-control;
 }
 
+/* FIXME used in app for all 'link_to' links, needs another rules */
 a:not([class]),
 input[type=submit]:not([class]) {
   @extend .btn, .btn-primary;
@@ -56,6 +57,11 @@ input[type=submit]:not([class]) {
 
 .edit-buttons a:not(:last-child) {
   margin-bottom: 20px;
+}
+
+/* FIXME this @extend fails in commontator/threads.scss even with bootstrap imported */
+.thread .temp {
+  @extend .btn, .btn-default;
 }
 
 .field.form-group>div {
