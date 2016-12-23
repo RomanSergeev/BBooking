@@ -1,0 +1,47 @@
+// TODO these styles are not loaded. Make them loading and remove commantator directory
+.thread {
+  display: block !important;
+
+  a.comment_edit_link,
+  a.comment_delete_link,
+  a.comment_undelete_link {
+    color: #CCC;
+    font-size: 14px;
+  }
+
+  a.comment_edit_link:hover,
+  a.comment_delete_link:hover,
+  a.comment_undelete_link:hover {
+    text-decoration: none;
+    color: #AAA;
+  }
+
+  textarea {
+    resize: none;
+  }
+}
+
+.thread_actions {
+  position: absolute;
+  right: 0;
+}
+
+.comment {
+  border: 1px solid;
+  border-radius: 10px;
+}
+
+.comment:before {
+  content: "";
+  position: absolute;
+
+  width: 0;
+  height: 0;
+
+  left: 2%;
+  top: -5px;
+
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-bottom: 5px solid #CCC;
+}

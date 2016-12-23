@@ -1,13 +1,15 @@
-<h1>Editing Service</h1>
+<div class="with-user-links">
+  <h1>Editing Service</h1>
 
-<%= render 'form',
-           service: @service,
-           view_data: @services_presenter.form_data(@service.servicedata) %>
-<br/>
+  <%= render 'form',
+             service: @service,
+             view_data: @services_presenter.form_data(@service.servicedata) %>
+  <br/>
 
-<% if service_url(@service) != _back_url %>
-  <%= link_to 'Show', @service %>
-  <br/>
-  <br/>
-<% end %>
-<%= link_to 'Back', :back %>
+  <% if service_url(@service) != _back_url %>
+    <%= link_to 'Show', @service %>
+    <br/>
+    <br/>
+  <% end %>
+  <%= link_to 'Back', :back %>
+</div>

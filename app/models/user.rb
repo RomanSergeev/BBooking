@@ -11,6 +11,7 @@ class User < ApplicationRecord
   has_one :profile
   has_one :calendar
   has_many :services
+
   acts_as_commontator
   acts_as_commontable
 

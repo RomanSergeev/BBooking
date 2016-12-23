@@ -1,4 +1,6 @@
-<%= form_for (view_data[:calendar]), url: {action: 'update'} do |f| %>
+<%= form_for (view_data[:calendar]),
+             url: { action: 'update' },
+             html: { class: 'with-user-links' } do |f| %>
   <label for="calendar[preferences][serving_start]">Time when you start working:</label>
   <input type="number"
          id="startDoublerHours"

@@ -1,7 +1,9 @@
-<h2>Create your profile</h2>
-<br/>
+<div class="with-user-links">
+  <h2>Create your profile</h2>
+  <br/>
 
-<%= render 'register_form', profile: @profile %>
+  <%= render 'register_form', profile: @profile %>
 
-<br/>
-<%= link_to params[:from_creation] ? 'Skip' : 'Back', user_path(current_user) %>
+  <br/>
+  <%= link_to params[:from_creation] ? 'Skip' : 'Back', user_path(current_user) %>
+</div>

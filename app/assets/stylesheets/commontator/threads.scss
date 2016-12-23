@@ -11,14 +11,17 @@
   }
 
   a.comment_edit_link,
-  a.comment_delete_link {
+  a.comment_delete_link,
+  a.comment_undelete_link {
     color: #CCC;
     font-size: 14px;
   }
 
   a.comment_edit_link:hover,
-  a.comment_delete_link:hover {
+  a.comment_delete_link:hover,
+  a.comment_undelete_link:hover {
     text-decoration: none;
+    color: #AAA;
   }
 
   textarea {
@@ -27,7 +30,8 @@
 }
 
 .thread_actions {
-  float: right;
+  position: absolute;
+  right: 0;
 }
 
 .thread_header {

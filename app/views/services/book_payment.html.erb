@@ -1,17 +1,19 @@
-<h2>Service booking</h2>
-<br/>
-<br/>
-You are going to book
-<b><%= @service[:servicedata]['name'] %></b>
-at
-<b><%= view_data[:day] %></b>,
-<b><%= view_data[:hours] %>:<%= view_data[:minutes] %></b>.
-<br/>
-<%= form_tag booking_completed_path, authenticity_token: form_authenticity_token do %>
-  <input type="hidden" name="day" value="<%= view_data[:day] %>" />
-  <input type="hidden" name="hours" value="<%= view_data[:hours] %>" />
-  <input type="hidden" name="minutes" value="<%= view_data[:minutes] %>" />
-  <input type="submit" value="Yes, book" />
-<% end %>
-<br/>
-<%= link_to 'No, I\'ve changed my mind', service_path(@service) %>
+<div class="with-user-links">
+  <h2>Service booking</h2>
+  <br/>
+  <br/>
+  You are going to book
+  <b><%= @service[:servicedata]['name'] %></b>
+  at
+  <b><%= view_data[:day] %></b>,
+  <b><%= view_data[:hours] %>:<%= view_data[:minutes] %></b>.
+  <br/>
+  <%= form_tag booking_completed_path, authenticity_token: form_authenticity_token do %>
+    <input type="hidden" name="day" value="<%= view_data[:day] %>" />
+    <input type="hidden" name="hours" value="<%= view_data[:hours] %>" />
+    <input type="hidden" name="minutes" value="<%= view_data[:minutes] %>" />
+    <input type="submit" value="Yes, book" />
+  <% end %>
+  <br/>
+  <%= link_to 'No, I\'ve changed my mind', service_path(@service) %>
+</div>

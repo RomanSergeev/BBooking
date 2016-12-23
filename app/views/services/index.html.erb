@@ -1,29 +1,31 @@
-<p id="notice"><%= notice %></p>
+<div class="with-user-links">
+  <p id="notice"><%= notice %></p>
 
-<h1>Services</h1>
+  <h1>Services</h1>
 
-<table>
-  <thead>
-    <tr>
-      <th>User</th>
-      <th>Servicedata</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @services.each do |service| %>
+  <table>
+    <thead>
       <tr>
-        <td><%= service.user_id %></td>
-        <td><%= service.servicedata %></td>
-        <td><%= link_to 'Show', service %></td>
-        <td><%= link_to 'Edit', edit_service_path(service) %></td>
-        <td><%= link_to 'Destroy', service, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <th>User</th>
+        <th>Servicedata</th>
+        <th colspan="3"></th>
       </tr>
-    <% end %>
-  </tbody>
-</table>
+    </thead>
 
-<br>
+    <tbody>
+      <% @services.each do |service| %>
+        <tr>
+          <td><%= service.user_id %></td>
+          <td><%= service.servicedata %></td>
+          <td><%= link_to 'Show', service %></td>
+          <td><%= link_to 'Edit', edit_service_path(service) %></td>
+          <td><%= link_to 'Destroy', service, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
 
-<%= link_to 'New Service', new_service_path %>
+  <br/>
+
+  <%= link_to 'New Service', new_service_path %>
+</div>
