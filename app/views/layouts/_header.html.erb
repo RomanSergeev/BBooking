@@ -2,10 +2,25 @@
   <div class="container">
     <div class="navbar-header">
       <a class="navbar-brand" href="<%= welcome_index_url %>"><b>B</b>Booking system</a>
-      <form id="global_search_form" action="<%= search_path %>" method="get">
-        <input type="text" id="q" name="q" class="form-control" placeholder="Search..." />
-        <input type="submit" class="btn btn-info" value="Go" />
-      </form>
+      <% if current_user.present? %>
+        <div class="my-menu-holder">
+          <button class="btn btn-default my-menu-button dropdown-toggle"
+                  type="button"
+                  data-toggle="dropdown"><%= fa_icon 'home' %>
+          </button>
+          <ul class="dropdown-menu">
+            <li><%= link_to 'Home page', user_path(current_user) %></li>
+            <li><%= link_to 'My services', edit_services_path(current_user) %></li>
+            <li><%= link_to 'My calendar', user_calendar_path(current_user) %></li>
+            <li class="divider"></li>
+            <li><%= link_to 'Logout', destroy_user_session_path, method: :delete %></li>
+          </ul>
+        </div>
+        <form id="global_search_form" action="<%= search_path %>" method="get">
+          <input type="text" id="q" name="q" class="form-control" placeholder="Search..." />
+          <input type="submit" class="btn btn-info" value="Go" />
+        </form>
+      <% end %>
     </div>
   </div>
 </nav>

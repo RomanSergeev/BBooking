@@ -2,6 +2,62 @@ html, body {
   height: 100%;
 }
 
+.my-menu-button {
+  border-radius: 50%;
+  color: #777;
+  font-size: 25px;
+}
+
+.my-menu-button:active,
+.my-menu-button:focus {
+  outline: none !important;
+}
+
+.my-menu-holder {
+  position: relative;
+  display: inline;
+}
+
+.my-menu-holder .dropdown-menu {
+  top: 35px;
+  margin: 0;
+  padding: 0;
+  border-radius: 7px;
+}
+
+.my-menu-holder .dropdown-menu a {
+  background-color: transparent;
+  border-color: #adadad;
+}
+
+.my-menu-holder .dropdown-menu a:hover {
+  background-color: #e6e6e6;
+}
+
+.my-menu-holder .dropdown-menu a:active {
+  background-color: #adadad;
+}
+
+.register-form input[type=text],
+.register-form input[type=email],
+.register-form input[type=password] {
+  @extend .form-control;
+}
+
+a:not([class]),
+input[type=submit]:not([class]) {
+  @extend .btn, .btn-primary;
+}
+
+.edit-buttons a {
+  width: 100%;
+  text-align: center;
+}
+
+.edit-buttons a:not(:last-child) {
+  margin-bottom: 20px;
+}
+
 .field.form-group>div {
   display: inline;
 }
@@ -49,13 +105,14 @@ html, body {
   border-radius: 50%;
 }
 
-.label.label-info:hover,
-#descriptionLabel:hover+.label.label-info {
+label:hover + .label-info,
+.label.label-info:hover {
   opacity: 1;
 }
 
 .label.label-info {
   opacity: 0;
+  margin-right: 5px;
   -webkit-transition: opacity .5s;
      -moz-transition: opacity .5s;
        -o-transition: opacity .5s;
@@ -74,7 +131,7 @@ html, body {
 
 .label-info+.popover .popover-title,
 .label-info+.popover .popover-content {
-  background: linear-gradient( to right, white, #5bc0de );
+  background: linear-gradient( to right, white, #31b0d5 );
 }
 
 .link-logout {

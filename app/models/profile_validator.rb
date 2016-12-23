@@ -11,4 +11,5 @@ class ProfileValidator < ActiveModel::Validator
       record.errors[:phone] = 'Phone should be digital like XXX-XXX-XXXX.'
     end
   end
+
 end

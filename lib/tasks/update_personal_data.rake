@@ -1,6 +1,6 @@
-namespace :profiles do
+namespace :profile do
   task update_personal_data: :environment do
-    Profile.all.each do |profile|
+    Profile.find_each(batch_size: 1000) do |profile|
       profile.personaldata['address'] = ""
       profile.save!
     end

@@ -11,5 +11,9 @@
  * It is generally better to create a new file per style scope.
  */
 @import "bootstrap";
-@import "users";
+@import "font-awesome";
+
 @import "global";
+@import "users";
+@import "calendars";
+@import "welcome";

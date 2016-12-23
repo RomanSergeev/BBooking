@@ -1,0 +1,20 @@
+<div class="timeline tl-free">
+  <div class="timeline tl-out-of-work" style="<%= format_width(view_data[:serving_start]) %>"></div>
+  <div class="timeline tl-out-of-work" style="
+    <%= format_complement_width(view_data[:serving_finish]) %>
+    <%= format_left(view_data[:serving_finish]) %>">
+  </div>
+  <% if view_data[:break_start] %>
+    <div class="timeline tl-out-of-work"
+         style="<%= format_width_and_left(view_data[:break_length], view_data[:break_start]) %>">
+    </div>
+  <% end %>
+  <% timeline_data[:my_orders].each do |order| %>
+    <%= render 'calendars/calendar_item',
+               view_data: @calendars_presenter.calendar_item_data(order, view_data[:id]) %>
+  <% end %>
+  <% timeline_data[:ordered_at_me].each do |order| %>
+    <%= render 'calendars/calendar_item',
+               view_data: @calendars_presenter.calendar_item_data(order, view_data[:id]) %>
+  <% end %>
+</div>

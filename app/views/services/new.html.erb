@@ -1,6 +1,7 @@
 <h1>New Service</h1>
 
-<%= render 'form', service: @service %>
+<%= render 'form',
+           service: @service,
+           view_data: @services_presenter.form_data(@service.servicedata) %>
 
 <br/>
-<%= link_to 'Back', :back, class: 'btn btn-primary' %>

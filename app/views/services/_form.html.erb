@@ -1,26 +1,18 @@
 <%= form_for(service) do |f| %>
-  <% if service.errors.any? %>
-    <div id="error_explanation" class="notshown">
-      <h2><%= pluralize(service.errors.count, 'error') %>
-        prohibited this service from being saved:</h2>
-
-      <ul>
-      <% service.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
-  <% name = @service.servicedata['name'] %>
-  <% duration = @service.servicedata['duration'] || 15 %>
-  <% description = @service.servicedata['description'] %>
-
   <label for="service[servicedata][name]">Service name</label>
+  <% if service.errors[:name].any? %>
+    <span class="label label-warning"
+          data-toggle="popover"
+          data-trigger="hover"
+          data-content="<%= service.errors[:name][0] %>"
+          data-original-title="Warning">!
+    </span>
+  <% end %>
   <input type="text"
          id="service[servicedata][name]"
          name="service[servicedata][name]"
          class="form-control"
-         value="<%= name %>" />
+         value="<%= view_data[:name] %>" />
   <br/>
   <label for="service[servicedata][duration]">Average duration</label>
   <input type="number"
@@ -28,22 +20,52 @@
          name="rangeDoubler"
          min="1"
          max="120"
-         oninput="changeInputValue($('#service\\[servicedata\\]\\[duration\\]')[0], this.value)"
-         value="<%= duration %>" />
+         value="<%= view_data[:duration] %>" />
   minutes
   <input type="range"
          id="service[servicedata][duration]"
          name="service[servicedata][duration]"
          min="1"
          max="120"
-         oninput="changeInputValue($('#rangeDoubler')[0], this.value)"
          class="form-control"
-         value="<%= duration %>" />
+         value="<%= view_data[:duration] %>" />
   <br/>
-  <label id="descriptionLabel" for="service[servicedata][description]">You may add some description here</label>
-  <span class="label label-info" data-toggle="popover" data-trigger="hover"
-        data-content="You don't have to write out your personal info (phone, address, etc.) here; it is seen from your profile page." data-original-title="Info">!</span>
-  <textarea maxlength="500" id="service[servicedata][description]" name="service[servicedata][description]" rows="6" class="form-control" style="resize: none"><%= description %></textarea>
+  <label for="setRestTimeDefault">Use default rest time (from calendar)</label>
+  <input id="setRestTimeDefault"
+         type="checkbox"
+         onchange = "disable_rest_time_inputs(this)" />
   <br/>
-  <%= f.submit class: 'btn btn-primary' %>
+  <label for ="service[servicedata][rest_time]">Rest time</label>
+  <input type="number"
+         id="restDoubler"
+         name="restDoubler"
+         min="1"
+         max="60"
+         value="<%= view_data[:rest_time] %>" />
+  minutes
+  <input type="range"
+         id="service[servicedata][rest_time]"
+         name="service[servicedata][rest_time]"
+         min="1"
+         max="60"
+         class="form-control"
+         value="<%= view_data[:rest_time] %>" />
+  <br/>
+  <label for="service[servicedata][description]">You may add some description here</label>
+  <span class="label label-info"
+        data-toggle="popover"
+        data-trigger="hover"
+        data-content="You don't have to write out your personal info (phone, address, etc.) here;
+        it is seen from your profile page."
+        data-original-title="Info">!
+  </span>
+  <textarea maxlength="500"
+            id="service[servicedata][description]"
+            name="service[servicedata][description]"
+            rows="6"
+            class="form-control"
+            style="resize: none"><%= view_data[:description] %>
+  </textarea>
+  <br/>
+  <%= f.submit %>
 <% end %>

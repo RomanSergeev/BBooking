@@ -11,24 +11,23 @@
           </tr>
         </thead>
         <tbody>
-        <% @services.each do |service|
-          name = service.servicedata && service.servicedata['name'] || ''
-          duration = service.servicedata && service.servicedata['duration'] || '' %>
-          <tr>
-            <td><%= name %></td>
-            <td><%= "#{duration} minutes" %></td>
-            <td><%= link_to 'View', service_path(service), class: 'btn btn-primary' %></td>
-            <td><%= link_to 'Edit', edit_service_path(service), class: 'btn btn-primary' %></td>
-            <td><%= link_to 'Delete', service_path(service), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-primary' %></td>
-          </tr>
-        <% end %>
+          <% @services.each do |service| %>
+            <tr>
+              <td><%= format_name(service) %></td>
+              <td><%= format_duration(service) %></td>
+              <td><%= link_to 'View', service_path(service) %></td>
+              <td><%= link_to 'Edit', edit_service_path(service) %></td>
+              <td><%= link_to 'Delete',
+                              service_path(service),
+                              method: :delete,
+                              data: { confirm: 'Are you sure?' } %></td>
+            </tr>
+          <% end %>
         </tbody>
       </table>
     <% end %>
   </div>
   <div class="col-sm-2 edit-buttons">
-    <%= link_to 'New service', new_service_path, :class => 'btn btn-primary' %>
-    <br/><br/>
-    <%= link_to 'My homepage', user_path, :class => 'btn btn-primary' %>
+    <%= link_to 'New service', new_service_path %>
   </div>
 </div>

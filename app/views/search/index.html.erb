@@ -1,11 +1,8 @@
-<% unless @records.any? %>
+<% unless view_data[:records].any? %>
   No results match your query :(
 <% end %>
-<% @records.each do |record| %>
+<% view_data[:records].each do |record| %>
   <%= link_to record.servicedata['name'], service_path(record.id) %>
   - provided by <%= link_to record.userdata['name'], user_path(record.user_id) %>
-  <div>
-    <%= record.tooltip.html_safe %>
-  </div>
   <hr/>
 <% end %>

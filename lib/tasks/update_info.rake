@@ -1,6 +1,6 @@
-namespace :profiles do
+namespace :profile do
   task update_info: :environment do
-    User.all.each do |user|
+    User.find_each(batch_size: 1000) do |user|
       unless Profile.exists?(user_id: user.id)
         profile = Profile.new
         profile.user_id = user.id # Correct or not?

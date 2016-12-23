@@ -2,15 +2,19 @@ class ProfilesController < ApplicationController
   layout 'user'
 
   def new
-    @profile = Profile.new(user_id: current_user.id, personaldata: {name: '', phone: ''})
+    set_services
+    @profile = @profiles_service.new_profile(current_user)
   end
 
   def edit
-    @profile = Profile.where(user_id: current_user.id)[0]
+    set_services
+    @profile = @profiles_service.find_profile(params[:id])
+    require_permission?
   end
 
   def create
-    @profile = Profile.new(user_id: current_user.id, personaldata: params[:profile])
+    set_services
+    @profile = @profiles_service.new_profile(current_user, params)
     if @profile.save
       redirect_to user_path(current_user)
     else
@@ -19,7 +23,9 @@ class ProfilesController < ApplicationController
   end
 
   def update
-    @profile = Profile.find(params[:id])
+    set_services
+    @profile = @profiles_service.find_profile(params[:id])
+    require_permission? or return
     if @profile.update_attributes(personaldata: params[:profile])
       redirect_to user_path(current_user)
     else
@@ -28,6 +34,19 @@ class ProfilesController < ApplicationController
   end
 
   private
+
+  def require_permission?
+    if @profile.user_id != current_user.id
+      redirect_to user_path(current_user.id),
+                  notice: 'Editing of other\'s profile is forbidden.'
+      return false
+    end
+    true
+  end
+
+  def set_services
+    @profiles_service = ProfilesService.new
+  end
 
   # now unused, may be used later
   def profile_params

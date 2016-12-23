@@ -1,0 +1,18 @@
+<div class="timeline <%= view_data[:class_name] %>" style=
+  "<%= format_width_and_left(view_data[:duration], view_data[:minutes]) %>"
+  data-toggle="popover"
+  data-trigger="hover"
+  data-placement="top"
+  data-content="<%= view_data[:description] %>"
+  data-original-title="<%= view_data[:title] %>">
+</div>
+<% if view_data[:should_render_rest] %>
+  <div class="timeline tl-rest-time" style=
+    "<%= format_width_and_left(view_data[:rest_time], view_data[:rest_offset]) %>"
+    data-toggle="popover"
+    data-trigger="hover"
+    data-placement="top"
+    data-content="rest after service for <%= view_data[:rest_time] %> minutes."
+    data-original-title="Rest time">
+  </div>
+<% end %>
