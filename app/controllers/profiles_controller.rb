@@ -1,19 +1,21 @@
 class ProfilesController < ApplicationController
   layout 'user'
 
+  def initialize
+    super
+    @profiles_service = ProfilesService.new
+  end
+
   def new
-    set_services
     @profile = @profiles_service.new_profile(current_user)
   end
 
   def edit
-    set_services
     @profile = @profiles_service.find_profile(params[:id])
     require_permission?
   end
 
   def create
-    set_services
     @profile = @profiles_service.new_profile(current_user, params)
     if @profile.save
       redirect_to user_path(current_user)
@@ -23,7 +25,6 @@ class ProfilesController < ApplicationController
   end
 
   def update
-    set_services
     @profile = @profiles_service.find_profile(params[:id])
     require_permission? or return
     if @profile.update_attributes(personaldata: params[:profile])
@@ -42,10 +43,6 @@ class ProfilesController < ApplicationController
       return false
     end
     true
-  end
-
-  def set_services
-    @profiles_service = ProfilesService.new
   end
 
   # now unused, may be used later

@@ -11,11 +11,6 @@ class ServicesService
   end
 
   # Use callbacks to share common setup or constraints between actions.
-  def set_service_and_provider(id)
-    service = Service.find(id)
-    provider = User.preload(:profile).find(service.user_id)
-    [service, provider]
-  end
 
   def update_text_search_column(provider, service)
     service.textsearchable_index_col =

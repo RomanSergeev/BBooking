@@ -1,15 +1,18 @@
 class UsersController < ApplicationController
   layout 'user' # why isn't it set automatically?
 
+  def initialize
+    super
+    @users_service = UsersService.new
+  end
+
   def show
-    set_services
     user = @users_service.find_user(params)
     init_presenter
     render 'show', locals: { view_data: @users_presenter.show_data(user, current_user) }
   end
 
   def edit_services
-    set_services
     user = @users_service.find_user(params)
     require_permission?(user) or return
     require_profile?(user) or return
@@ -17,7 +20,6 @@ class UsersController < ApplicationController
   end
 
   def show_services
-    set_services
     user = @users_service.find_user(params)
     require_profile?(user) or return
     prevent_own_ordering?(user) or return
@@ -39,10 +41,6 @@ class UsersController < ApplicationController
     if user.id == current_user.id
       redirect_to edit_services_path(user)
     end
-  end
-
-  def set_services
-    @users_service = UsersService.new
   end
 
   def init_presenter

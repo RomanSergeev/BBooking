@@ -1,10 +1,15 @@
 class ServicesController < ApplicationController
   layout 'user' # TODO change to services new own layout
 
+  def initialize
+    super
+    @calendars_service = CalendarsService.new
+    @services_service = ServicesService.new
+  end
+
   # GET /services/1
   # GET /services/1.json
   def show
-    set_services
     set_service_and_provider
     init_presenter
     render 'show', locals: { view_data: @services_presenter.show_data(@service.servicedata) }
@@ -12,7 +17,6 @@ class ServicesController < ApplicationController
 
   # GET /services/new
   def new
-    set_services
     require_profile?(current_user) or return
     @service = @services_service.new_service(current_user.id)
     init_presenter
@@ -20,7 +24,6 @@ class ServicesController < ApplicationController
 
   # GET /services/1/edit
   def edit
-    set_services
     set_service_and_provider
     require_permission? or return
     init_presenter
@@ -29,7 +32,6 @@ class ServicesController < ApplicationController
   # POST /services
   # POST /services.json
   def create
-    set_services
     @service = @services_service.new_service(current_user.id, service_params)
     @service.servicedata = params[:service][:servicedata]
     @services_service.update_text_search_column(current_user, @service)
@@ -54,7 +56,6 @@ class ServicesController < ApplicationController
   # PATCH/PUT /services/1
   # PATCH/PUT /services/1.json
   def update
-    set_services
     set_service_and_provider
     require_permission? or return
     @service.servicedata = params[:service][:servicedata]
@@ -73,7 +74,6 @@ class ServicesController < ApplicationController
   # DELETE /services/1
   # DELETE /services/1.json
   def destroy
-    set_services
     set_service_and_provider
     require_permission? or return
     @service.destroy
@@ -84,7 +84,6 @@ class ServicesController < ApplicationController
   end
 
   def book
-    set_services
     require_profile?(current_user) or return
     set_service_and_provider
     prevent_own_booking? or return
@@ -109,7 +108,6 @@ class ServicesController < ApplicationController
   end
 
   def book_payment
-    set_services
     require_profile?(current_user) or return
     set_service_and_provider
     prevent_own_booking? or return
@@ -131,7 +129,6 @@ class ServicesController < ApplicationController
   end
 
   def booking_completed
-    set_services
     require_profile?(current_user) or return
     set_service_and_provider
     prevent_own_booking? or return
@@ -174,11 +171,6 @@ class ServicesController < ApplicationController
     true
   end
 
-  def set_services
-    @calendars_service = CalendarsService.new
-    @services_service = ServicesService.new
-  end
-
   def init_presenter
     @services_presenter = ServicesPresenter.new
   end
@@ -188,7 +180,8 @@ class ServicesController < ApplicationController
   end
 
   def set_service_and_provider
-    @service, @provider = @services_service.set_service_and_provider(params[:id])
+    @service = Service.find(params[:id])
+    @provider = User.preload(:profile).find(@service.user_id)
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.

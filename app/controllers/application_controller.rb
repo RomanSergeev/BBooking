@@ -2,12 +2,16 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
   before_action :authenticate_user!
 
+  def initialize
+    super
+    @application_service = ApplicationService.new
+  end
+
   def after_sign_in_path_for(user)
     user_path(user)
   end
 
   def search
-    set_services
     render 'search/index',
            layout: 'search',
            locals: {
@@ -25,11 +29,4 @@ class ApplicationController < ActionController::Base
     end
     true
   end
-
-  private
-
-  def set_services
-    @application_service = ApplicationService.new
-  end
-
 end

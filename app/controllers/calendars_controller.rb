@@ -1,8 +1,13 @@
 class CalendarsController < ApplicationController
   layout 'user'
 
+  def initialize
+    super
+    @calendars_service = CalendarsService.new
+    @users_service = UsersService.new
+  end
+
   def show
-    set_services
     user = @users_service.find_user(params)
     require_profile?(user) or return
     @timeline_data = @calendars_service.get_data_for_timeline(user, false)
@@ -11,7 +16,6 @@ class CalendarsController < ApplicationController
   end
 
   def edit
-    set_services
     user = @users_service.find_user(params)
     require_permission?(user) or return
     require_profile?(user) or return
@@ -20,7 +24,6 @@ class CalendarsController < ApplicationController
   end
 
   def update
-    set_services
     user = @users_service.find_user(params)
     require_permission?(user) or return
     require_profile?(user) or return
@@ -54,11 +57,6 @@ class CalendarsController < ApplicationController
       return false
     end
     true
-  end
-
-  def set_services
-    @calendars_service = CalendarsService.new
-    @users_service = UsersService.new
   end
 
   def init_presenter
