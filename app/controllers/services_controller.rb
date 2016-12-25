@@ -59,7 +59,7 @@ class ServicesController < ApplicationController
     set_service_and_provider
     require_permission? or return
     @service.servicedata = params[:service][:servicedata]
-    @services_service.update_text_search_column(@provider, @service)
+    @services_service.update_text_search_column(current_user, @service)
     respond_to do |format|
       if @service.update(service_params)
         format.html { redirect_to @service, notice: 'Service was successfully updated.' }

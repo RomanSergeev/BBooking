@@ -1,15 +1,7 @@
 class ApplicationService
 
-  # TODO make some universal query preparator
   def search_results(_param)
-    param = _param || ''
-    param.delete!('&')
-    param.delete!('|')
-    param.squeeze!(' ')
-    param.strip!
-    param.gsub!(' ', ' | ')
-    # single-quotes are essential for correct PostgreSQL ts_query
-    query = 'to_tsquery(\'' + param + '\')'
+    query = prepare_query(_param)
     {
       records: Service.find_by_sql(
         'SELECT * FROM (' +
@@ -26,6 +18,19 @@ class ApplicationService
         'ORDER BY t.rank DESC;'
       )
     }
+  end
+
+  # @param[String] _param
+  # @return [String]
+  def prepare_query(_param)
+    param = _param || ''
+    param.delete!('&')
+    param.delete!('|')
+    param.squeeze!(' ')
+    param.strip!
+    param.gsub!(' ', ' | ')
+    # single-quotes are essential for correct PostgreSQL ts_query
+    'to_tsquery(\'' + param + '\')'
   end
 
 end
