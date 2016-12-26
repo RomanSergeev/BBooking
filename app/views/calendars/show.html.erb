@@ -1,6 +1,13 @@
 <div class="row with-user-links">
   <div class="col-sm-9">
     <h2><%= view_data[:calendar_title_text] %></h2>
+    Select date:
+    <input type="text"
+           data-provide='datepicker-inline'
+           data-date-max-view-mode="1"
+           data-date-today-btn="linked"
+           data-date-today-highlight="true"
+    />
     <br/>
     <br/>
     <%= render 'calendars/calendar_timeline',

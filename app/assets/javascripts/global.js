@@ -11,7 +11,13 @@ var TIMELINE_PERCENT = 14.4;
 $(document).ready(function() {
   $('.dropdown-toggle').dropdown();
   $('[data-toggle="popover"]').popover();
-
+  $('.datepicker').datepicker()
+    .on('changeDate', function(e) {
+      // `e` here contains the extra attributes
+      console.log(e);
+      console.log(e.date);
+    });
+  $('.datepicker').datepicker('setDate', 'today');
   var two_side_updater = [
     function (elems) {
       return function () {
