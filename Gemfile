@@ -33,6 +33,8 @@ gem 'bootstrap-sass', '~> 3.3.6'
 # Maybe is needed
 #gem 'autoprefixer-rails'
 gem 'font-awesome-rails'
+gem 'commontator', '~> 4.11.1'
+gem 'bootstrap-datepicker-rails'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
@@ -44,8 +46,6 @@ group :development, :test do
   gem 'shoulda-matchers'
   gem 'factory_girl_rails', '~> 4.7.0'
   gem 'faker', '~> 1.6.6'
-  gem 'commontator', '~> 4.11.1'
-  gem 'bootstrap-datepicker-rails'
 end
 
 group :development do

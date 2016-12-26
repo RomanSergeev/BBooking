@@ -1,0 +1,352 @@
+/*
+
+
+
+ */
+
+.mentions-input-box {
+  position: relative;
+  background: #fff;
+}
+
+.mentions-input-box textarea {
+  overflow: hidden;
+  background: transparent;
+  position: relative;
+  resize: none;
+
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+.mentions-input-box .mentions-autocomplete-list {
+  display: none;
+  background: #fff;
+  border: 1px solid #b2b2b2;
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: 10000;
+  margin-top: -2px;
+
+  border-radius:5px;
+  border-top-right-radius:0;
+  border-top-left-radius:0;
+
+  -webkit-box-shadow: 0 2px 5px rgba(0, 0, 0, 0.148438);
+     -moz-box-shadow: 0 2px 5px rgba(0, 0, 0, 0.148438);
+          box-shadow: 0 2px 5px rgba(0, 0, 0, 0.148438);
+}
+
+.mentions-input-box .mentions-autocomplete-list ul {
+    margin: 0;
+    padding: 0;
+}
+
+.mentions-input-box .mentions-autocomplete-list li {
+  background-color: #fff;
+  padding: 0 5px;
+  margin: 0;
+  width: auto;
+  border-bottom: 1px solid #eee;
+  height: 26px;
+  line-height: 26px;
+  overflow: hidden;
+  cursor: pointer;
+  list-style: none;
+  white-space: nowrap;
+}
+
+.mentions-input-box .mentions-autocomplete-list li:last-child {
+  border-radius:5px;
+}
+
+.mentions-input-box .mentions-autocomplete-list li > img,
+.mentions-input-box .mentions-autocomplete-list li > div.icon {
+  width: 16px;
+  height: 16px;
+  float: left;
+  margin-top:5px;
+  margin-right: 5px;
+  -moz-background-origin:3px;
+
+  border-radius:3px;
+}
+
+.mentions-input-box .mentions-autocomplete-list li em {
+  font-weight: bold;
+  font-style: none;
+}
+
+.mentions-input-box .mentions-autocomplete-list li:hover,
+.mentions-input-box .mentions-autocomplete-list li.active {
+  background-color: #f2f2f2;
+}
+
+.mentions-input-box .mentions-autocomplete-list li b {
+  background: #ffff99;
+  font-weight: normal;
+}
+
+.mentions-input-box .mentions {
+  position: absolute;
+  left: 1px;
+  right: 0;
+  top: 1px;
+  bottom: 0;
+  padding: 9px;
+  color: #fff;
+  overflow: hidden;
+
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+.mentions-input-box .mentions > div {
+  color: #fff;
+  white-space: pre-wrap;
+  width: 100%;
+}
+
+.mentions-input-box .mentions > div > strong {
+  font-weight:normal;
+  background: #d8dfea;
+}
+
+.mentions-input-box .mentions > div > strong > span {
+  filter: progid:DXImageTransform.Microsoft.Alpha(opacity=0);
+}
+.comment {
+  position: relative;
+
+  font-size: 12px;
+  font-weight: normal;
+  font-style: normal;
+
+  border: 1px solid;
+  border-radius: 10px;
+
+  margin-top: 15px;
+  margin-bottom: 15px;
+
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+
+  color: #000;
+  border-color: #CCC;
+  background-color: #FFF;
+
+  clear: both;
+}
+
+.comment:before {
+  content: "";
+  position: absolute;
+
+  width: 0;
+  height: 0;
+
+  left: 2%;
+  top: -5px;
+
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-bottom: 5px solid #CCC;
+}
+
+.comment_actions {
+  float: right;
+}
+
+.comment_body {
+  padding-top: 3px;
+}
+
+.comment_body p {
+  margin: 0px;
+
+  overflow: hidden;
+}
+
+.comment_div {
+  clear: both;
+}
+
+.comment_form_actions {
+  margin-top: 15px;
+  margin-bottom: 10px;
+}
+
+.comment_form_field textarea {
+  padding: 0px;
+
+  width: 100%;
+}
+
+.comment_avatar {
+  float: left;
+
+  margin-top: 5px;
+  margin-bottom: 10px;
+  margin-right: 10px;
+}
+
+.comment_timestamp {
+  color: #666;
+}
+
+.comment_votes {
+  float: right;
+  margin-top: 5px;
+  margin-bottom: 5px;
+
+  text-align: center;
+}
+
+.comment_votes input,
+.comment_votes img {
+  border: none;
+  background-color: transparent;
+  padding: 0px;
+  margin: 0px;
+}
+
+.comment_votes form {
+  margin: 0px;
+}
+
+.comment_upvote {
+  display: block;
+  height: 18px;
+  margin-top: 7px;
+  margin-bottom: 7px;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+.comment_downvote {
+  display: block;
+  height: 18px;
+  margin-top: 7px;
+  margin-bottom: 7px;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+.comment_like {
+  float: left;
+}
+
+.comment_like + .comment_vote_count {
+  float: right;
+}
+
+.comment_error_explanation {
+  margin-bottom: 10px;
+}
+
+.comment_error_explanation h3 {
+  margin-top: 5px;
+}
+
+.comment_error_explanation ul {
+  list-style-position: inside;
+}
+/* line 1, /home/dockeruser/project/app/assets/stylesheets/commontator/threads.scss */
+.thread {
+  display: block !important;
+}
+/* line 4, /home/dockeruser/project/app/assets/stylesheets/commontator/threads.scss */
+.thread .commontator_hidden {
+  display: none;
+}
+/* line 8, /home/dockeruser/project/app/assets/stylesheets/commontator/threads.scss */
+.thread .mentions-input-box .mentions {
+  left: -2px !important;
+  top: -2px !important;
+}
+/* line 13, /home/dockeruser/project/app/assets/stylesheets/commontator/threads.scss */
+.thread a.comment_edit_link,
+.thread a.comment_delete_link,
+.thread a.comment_undelete_link {
+  color: #CCC;
+  font-size: 14px;
+}
+/* line 20, /home/dockeruser/project/app/assets/stylesheets/commontator/threads.scss */
+.thread a.comment_edit_link:hover,
+.thread a.comment_delete_link:hover,
+.thread a.comment_undelete_link:hover {
+  text-decoration: none;
+  color: #AAA;
+}
+/* line 27, /home/dockeruser/project/app/assets/stylesheets/commontator/threads.scss */
+.thread textarea {
+  resize: none;
+}
+
+/* line 32, /home/dockeruser/project/app/assets/stylesheets/commontator/threads.scss */
+.thread_actions {
+  position: absolute;
+  right: 0;
+}
+
+/* line 37, /home/dockeruser/project/app/assets/stylesheets/commontator/threads.scss */
+.thread_header {
+  font-size: 16px;
+  font-weight: bold;
+  font-style: normal;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  display: block;
+}
+
+/* Modified from:
+http://www.strangerstudios.com/sandbox/pagination/diggstyle.php */
+/* line 48, /home/dockeruser/project/app/assets/stylesheets/commontator/threads.scss */
+.thread_page_entries_info {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+/* line 53, /home/dockeruser/project/app/assets/stylesheets/commontator/threads.scss */
+.thread_will_paginate {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+/* line 58, /home/dockeruser/project/app/assets/stylesheets/commontator/threads.scss */
+.thread_pagination a {
+  padding: 2px 5px 2px 5px;
+  margin-right: 4px;
+  border: 1px solid #999;
+  text-decoration: none;
+  color: #666;
+}
+
+/* line 67, /home/dockeruser/project/app/assets/stylesheets/commontator/threads.scss */
+.thread_pagination a:hover,
+.thread_pagination a:active {
+  border: 1px solid #555;
+  color: #000;
+}
+
+/* line 74, /home/dockeruser/project/app/assets/stylesheets/commontator/threads.scss */
+.thread_pagination em {
+  padding: 2px 5px 2px 5px;
+  margin-right: 4px;
+  border: 1px solid #555;
+  font-weight: bold;
+  background-color: #555;
+  color: #FFF;
+}
+
+/* line 84, /home/dockeruser/project/app/assets/stylesheets/commontator/threads.scss */
+.thread_pagination span {
+  padding: 2px 5px 2px 5px;
+  margin-right: 4px;
+  border: 1px solid #EEE;
+  color: #DDD;
+}
