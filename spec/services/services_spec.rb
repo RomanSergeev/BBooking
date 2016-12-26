@@ -17,21 +17,18 @@ describe ServicesService, type: :service do
     end
   end
 
-  # NOT PASSING
-=begin
   describe '#update_text_search_column' do
     it 'records new text_search_column' do
       service_name = 'some name'
       description = 'some description'
       profile_name = 'Username'
       service = build(:service)
-      # TODO why json objects aren't working here?
-      service.servicedata = '{"name" : "' + service_name + '", "description" : "' + description + '"}'
+      service.servicedata['name'] = service_name
+      service.servicedata['description'] = description
       service.save!
-      profile = create(:profile, user: service.user)
-      profile.personaldata = '{"name": "' + profile_name + '"}'
-      # puts service.servicedata
-      # puts profile.personaldata
+      profile = build(:profile, user: service.user)
+      profile.personaldata['name'] = profile_name
+      profile.save!
       services_service.update_text_search_column(service.user, service)
       expect(service.textsearchable_index_col).to eq(
         profile_name + ' ' +
@@ -40,7 +37,6 @@ describe ServicesService, type: :service do
       )
     end
   end
-=end
 
   describe '#booking_is_available?' do
     it 'returns true' do

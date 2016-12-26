@@ -11,5 +11,11 @@ require 'rails_helper'
 #   end
 # end
 RSpec.describe CalendarsHelper, type: :helper do
-  pending "add some examples to (or delete) #{__FILE__}"
+  let(:dummy_class) { Class.new { include CalendarsHelper } }
+
+  describe '#width' do
+    it 'returns 100' do
+      expect(dummy_class.width(dummy_class::TIMELINE_PERCENT)).to eq(100)
+    end
+  end
 end

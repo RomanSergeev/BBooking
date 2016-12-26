@@ -8,6 +8,7 @@ FactoryGirl.define do
 
   factory :profile do
     user
+    sequence(:id)
     sequence(:personaldata) { |n| {name: "Name#{n}", phone: "111-222-3333"} }
   end
 end

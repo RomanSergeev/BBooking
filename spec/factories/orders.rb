@@ -1,5 +1,6 @@
 FactoryGirl.define do
   factory :order do
+    sequence(:id)
     customer_id 1
     service_id 1
     duration 1
