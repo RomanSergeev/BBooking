@@ -31,4 +31,12 @@ module CalendarsHelper
     total_minutes % 60
   end
 
+  def format_hours_and_minutes(total_minutes)
+    "#{format_time_value(hours(total_minutes))}:#{format_time_value(minutes(total_minutes))}"
+  end
+
+  def format_time_value(value)
+    value.to_s.rjust(2, '0')
+  end
+
 end

@@ -20,10 +20,10 @@ class UsersController < ApplicationController
   end
 
   def show_services
-    user = @users_service.find_user(params)
-    require_profile?(user) or return
-    prevent_own_ordering?(user) or return
-    @services = @users_service.find_user_services(user)
+    @user = @users_service.find_user(params)
+    require_profile?(@user) or return
+    prevent_own_ordering?(@user) or return
+    @services = @users_service.find_user_services(@user)
   end
 
   private
@@ -40,7 +40,9 @@ class UsersController < ApplicationController
   def prevent_own_ordering?(user)
     if user.id == current_user.id
       redirect_to edit_services_path(user)
+      return false
     end
+    true
   end
 
   def init_presenter

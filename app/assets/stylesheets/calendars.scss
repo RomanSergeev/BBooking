@@ -94,3 +94,16 @@
 .calendars-holder {
   position: relative;
 }
+
+.interval-time-mark {
+  position: absolute;
+  margin-left: -15px;
+}
+
+.interval-time-mark:nth-child(odd) {
+  top: 10px;
+}
+
+.interval-time-mark:nth-child(even) {
+  bottom: 10px;
+}

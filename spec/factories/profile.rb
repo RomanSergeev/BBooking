@@ -8,6 +8,6 @@ FactoryGirl.define do
 
   factory :profile do
     user
-    sequence(:personaldata) { |n| puts "{'name': 'Name#{n}', 'phone': '111-222-3333'}"; "{'name': 'Name#{n}', 'phone': '111-222-3333'}" }
+    sequence(:personaldata) { |n| {name: "Name#{n}", phone: "111-222-3333"} }
   end
 end

@@ -6,20 +6,20 @@
     <% else %>
       <table class="table table-striped table-hover">
         <thead>
-        <tr>
-          <th>Service name</th>
-          <th>Service duration</th>
-        </tr>
+          <tr>
+            <th>Service name</th>
+            <th>Service duration</th>
+          </tr>
         </thead>
         <tbody>
-        <% @services.each do |service| %>
-          <tr>
-            <td><%= format_name(service) %></td>
-            <td><%= format_duration(service) %></td>
-            <td><%= link_to 'View', service_path(service) %></td>
-            <td><%= link_to 'Book', book_service_path(service) %></td>
-          </tr>
-        <% end %>
+          <% @services.each do |service| %>
+            <tr>
+              <td><%= format_name(service) %></td>
+              <td><%= format_duration(service) %></td>
+              <td><%= link_to 'View', service_path(service) %></td>
+              <td><%= link_to 'Book', book_service_path(service) %></td>
+            </tr>
+          <% end %>
         </tbody>
       </table>
     <% end %>

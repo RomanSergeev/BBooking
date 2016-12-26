@@ -1,4 +1,6 @@
 <div class="timeline tl-free">
+  <%= render 'calendars/calendar_labels',
+             view_data: timeline_data %>
   <div class="timeline tl-out-of-work" style="<%= format_width(view_data[:serving_start]) %>"></div>
   <div class="timeline tl-out-of-work" style="
     <%= format_complement_width(view_data[:serving_finish]) %>

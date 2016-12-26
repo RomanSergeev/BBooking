@@ -1,0 +1,7 @@
+<% view_data[:all_time_marks].each do |mark| %>
+  <div class="interval-time-mark" style="<%= format_left(mark) %>">
+    <b>
+      <%= format_hours_and_minutes(mark) %>
+    </b>
+  </div>
+<% end %>

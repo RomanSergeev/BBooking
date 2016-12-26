@@ -15,6 +15,7 @@ class CalendarsService
       user: user,
       my_orders: my_orders,
       ordered_at_me: ordered_at_me,
+      all_time_marks: get_all_interval_marks(user, my_orders, ordered_at_me),
       free_time_intervals: get_free_interval_sets(user, user_is_provider, my_orders, ordered_at_me)
     }
   end
@@ -90,6 +91,35 @@ class CalendarsService
       ultimate_set.exclude!(start_minutes..start_minutes + order['duration'] + rest_time)
     end
     ultimate_set
+  end
+
+  # getting all the time points when user's events
+  # (booked services or provided services) start or end
+  def get_all_interval_marks(user, user_orders, orders_at_user)
+    return nil unless user.calendar.preferences['serving_start']
+    result = [0]
+    prefs = user.calendar.preferences
+    result << prefs['serving_start'].to_i + 1
+    result << prefs['break_start'].to_i
+    result << prefs['break_finish'].to_i + 1
+    result << prefs['serving_finish'].to_i
+    user_orders.each do |order|
+      start_time = DateTime.parse(order['start_time'])
+      start_minutes = start_time.hour * 60 + start_time.min
+      result << start_minutes
+      result << start_minutes + order['duration']
+    end
+    orders_at_user.each do |order|
+      start_time = DateTime.parse(order['start_time'])
+      start_minutes = start_time.hour * 60 + start_time.min
+      rest_time = order['rest_time'] > 0 ? order['rest_time'] - 1 : 0
+      result << start_minutes
+      result << start_minutes + order['duration'] + rest_time
+    end
+    result << MINUTES_IN_DAY
+    result.uniq!
+    result.sort { |x, y| x.to_i <=> y.to_i }
+    result
   end
 
   # get all services (with their additional info) ordered by user with id == user_id for today
